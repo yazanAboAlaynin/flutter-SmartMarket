@@ -1,17 +1,52 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_smartmarket/screens/home/home.dart';
+import 'package:flutter_smartmarket/services/api.dart';
+import 'package:flutter_smartmarket/shared/constants.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_smartmarket/shared/loading.dart';
+import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
   Register({this.toggleView});
+
   @override
   _RegisterState createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
+  final _formKey = GlobalKey<FormState>();
+  String name = '';
+  String email = '';
+  String password = '';
+  String confirm_password = '';
+  String mobile = '';
+  String dob = DateTime.now().toString();
+  String image;
+
+  String error = '';
+  bool loading = false;
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await DatePicker.showDatePicker(context,
+        showTitleActions: true,
+        minTime: DateTime(1950, 1, 1),
+        maxTime: DateTime.now(), onConfirm: (date) {
+      setState(() {
+        dob = date.toString();
+      });
+    }, currentTime: DateTime.now(), locale: LocaleType.en);
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       // ======== image ========
       body: SingleChildScrollView(
         child: Container(
@@ -44,90 +79,197 @@ class _RegisterState extends State<Register> {
                   // ==========text field=============
                   child: ListView(
                     children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Welcome',
-                            style: TextStyle(
-                                color: Color(0xfff032f42),
-                                fontSize: 26,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            'Register',
-                            style: TextStyle(color: Colors.grey, fontSize: 20),
-                          ),
-                          SizedBox(
-                            height: 50,
-                          ),
-                          InputTextField(
-                            label: "Name",
-                            icon: Icon(Icons.person),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          InputTextField(
-                            label: "Email",
-                            icon: Icon(Icons.email),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          InputTextField(
-                            label: "Password",
-                            isPassword: true,
-                            icon: Icon(
-                              Icons.https,
-                              size: 27,
-                              color: Colors.black54,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          InputTextField(
-                            label: "Mobile",
-                            icon: Icon(Icons.phone_android),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          InputTextField(
-                            label: "dob",
-                            icon: Icon(Icons.phone_android),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          InputTextField(
-                            label: "image",
-                            icon: Icon(Icons.phone_android),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Container(
-                            height: 50,
-                            margin: EdgeInsets.symmetric(horizontal: 50),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: Colors.blue[600],
-                            ),
-                            child: Center(
-                              child: Text(
-                                'Register',
+                      Container(
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Welcome',
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Color(0xfff032f42),
+                                    fontSize: 26,
                                     fontWeight: FontWeight.bold),
                               ),
-                            ),
+                              Text(
+                                'Register',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 20),
+                              ),
+                              SizedBox(
+                                height: 50,
+                              ),
+                              TextFormField(
+                                decoration: textInputDecoration.copyWith(
+                                    hintText: 'Name', icon: Icon(Icons.email)),
+                                validator: (val) =>
+                                    val.isEmpty ? 'Enter your Name' : null,
+                                onChanged: (val) {
+                                  setState(() {
+                                    name = val;
+                                  });
+                                },
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                decoration: textInputDecoration.copyWith(
+                                    hintText: 'Email', icon: Icon(Icons.email)),
+                                validator: (val) =>
+                                    val.isEmpty ? 'Enter an email' : null,
+                                onChanged: (val) {
+                                  setState(() {
+                                    email = val;
+                                  });
+                                },
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                decoration: textInputDecoration.copyWith(
+                                    hintText: 'Password',
+                                    icon: Icon(Icons.https)),
+                                obscureText: true,
+                                validator: (val) => val.length < 8
+                                    ? 'Enter a password 8+ chars long'
+                                    : null,
+                                onChanged: (val) {
+                                  setState(() {
+                                    password = val;
+                                  });
+                                },
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                decoration: textInputDecoration.copyWith(
+                                    hintText: 'Confirm Password',
+                                    icon: Icon(Icons.https)),
+                                obscureText: true,
+                                validator: (val) => val.length < 8
+                                    ? 'Enter a password 8+ chars long'
+                                    : null,
+                                onChanged: (val) {
+                                  setState(() {
+                                    confirm_password = val;
+                                  });
+                                },
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                decoration: textInputDecoration.copyWith(
+                                    hintText: 'Mobile',
+                                    icon: Icon(Icons.phone_android)),
+                                validator: (val) =>
+                                    val.isEmpty ? 'Enter your number' : null,
+                                onChanged: (val) {
+                                  setState(() {
+                                    mobile = val;
+                                  });
+                                },
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Row(children: <Widget>[
+                                Text('Date of Birth: '),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text("${dob}".split(' ')[0]),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                RaisedButton(
+                                  onPressed: () => _selectDate(context),
+                                  child: Text('Select date'),
+                                ),
+                                SizedBox(
+                                  height: 30.0,
+                                ),
+                              ]),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Center(
+                                child: image == null
+                                    ? Text('No image selected.')
+                                    : Text('No image selected')
+                              ),
+                              RaisedButton(
+                                onPressed: () async{
+                                 // var image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+                                  setState(() {
+                                    this.image = 'image';
+                                  });
+                                },
+                                child: Text('Select Image'),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              RaisedButton(
+                                color: Colors.blue[400],
+                                child: Text(
+                                  'Register',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  if (_formKey.currentState.validate()) {
+                                    setState(() {
+                                      loading = true;
+                                    });
+                                    var data = {
+                                      'name': email,
+                                      'email': email,
+                                      'password': password,
+                                      'c_password': confirm_password,
+                                      'mobile': mobile,
+                                      'dob': dob,
+                                      'image': image,
+                                    };
+                                    Response response =
+                                    await Api().authData(data, '/register');
+                                    Map<String,dynamic> body = json.decode(response.body);
+                                    print(body);
+                                    if (body['success'] != null) {
+                                      print('here');
+                                      SharedPreferences localStorage =
+                                      await SharedPreferences.getInstance();
+                                      localStorage.setString(
+                                          'token', json.encode(body['token']));
+                                      localStorage.setString(
+                                          'user', json.encode(body['user']));
+                                      Navigator.pushReplacement<Object,Object>(
+                                        context,
+                                        new MaterialPageRoute<dynamic>(
+                                            builder: (context) => Home()),
+                                      );
+                                    } else {
+                                      // _showMsg(body['message']);
+                                    }
+
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                  }
+                                },
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
@@ -141,30 +283,3 @@ class _RegisterState extends State<Register> {
   }
 }
 
-//===========text field=====================
-class InputTextField extends StatelessWidget {
-  final String label;
-  final Widget icon;
-  final bool isPassword;
-
-  InputTextField({this.label, this.icon, this.isPassword = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      style: TextStyle(color: Color(0xfff234253), fontWeight: FontWeight.bold),
-      obscureText: isPassword,
-      decoration: InputDecoration(
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey, width: 1.0),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey, width: 1.0),
-          ),
-          labelText: label,
-          labelStyle:
-              TextStyle(color: Color(0xfff234253), fontWeight: FontWeight.bold),
-          suffixIcon: icon),
-    );
-  }
-}
