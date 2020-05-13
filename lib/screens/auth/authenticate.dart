@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_smartmarket/screens/auth/register.dart';
 
 import 'login.dart';
 
@@ -21,7 +22,7 @@ class _AuthenticateState extends State<Authenticate> {
   @override
   Widget build(BuildContext context) {
     if (showSignIn) {
-      return Login(toggleView: toggleView);
+      return Register(toggleView: toggleView);
     } else {
       //return Register(toggleView: toggleView);
     }

@@ -133,7 +133,7 @@ class _LoginState extends State<Login> {
                                     };
                                     Response response =
                                         await Api().authData(data, '/login');
-                                    var body = json.decode(response.body);
+                                    Map<String,String> body = json.decode(response.body);
 
                                     if (body['success'] != null) {
                                       print('here');
@@ -143,9 +143,9 @@ class _LoginState extends State<Login> {
                                           'token', json.encode(body['token']));
                                       localStorage.setString(
                                           'user', json.encode(body['user']));
-                                      Navigator.pushReplacement(
+                                      Navigator.pushReplacement<Object,Object>(
                                         context,
-                                        new MaterialPageRoute(
+                                        new MaterialPageRoute<dynamic>(
                                             builder: (context) => Home()),
                                       );
                                     } else {
