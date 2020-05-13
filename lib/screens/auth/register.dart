@@ -105,7 +105,7 @@ class _RegisterState extends State<Register> {
                               ),
                               TextFormField(
                                 decoration: textInputDecoration.copyWith(
-                                    hintText: 'Name', icon: Icon(Icons.email)),
+                                    hintText: 'Name', icon: Icon(Icons.person),),
                                 validator: (val) =>
                                     val.isEmpty ? 'Enter your Name' : null,
                                 onChanged: (val) {
@@ -190,6 +190,7 @@ class _RegisterState extends State<Register> {
                                   width: 15,
                                 ),
                                 RaisedButton(
+                                  shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(20)),
                                   onPressed: () => _selectDate(context),
                                   child: Text('Select date'),
                                 ),
@@ -206,6 +207,7 @@ class _RegisterState extends State<Register> {
                                     : Text('No image selected')
                               ),
                               RaisedButton(
+                                shape: ContinuousRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(30),bottomRight: Radius.circular(30))),
                                 onPressed: () async{
                                  // var image = await ImagePicker.pickImage(source: ImageSource.camera);
 
@@ -219,6 +221,7 @@ class _RegisterState extends State<Register> {
                                 height: 15,
                               ),
                               RaisedButton(
+                                shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(15)),
                                 color: Colors.blue[400],
                                 child: Text(
                                   'Register',
