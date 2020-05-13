@@ -1,4 +1,4 @@
-# flutter_smartmarket
+# flutter_smartmarkete
 
 A new Flutter application.
 

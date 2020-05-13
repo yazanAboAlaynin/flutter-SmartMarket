@@ -25,7 +25,7 @@ class Api{
     var fullUrl = _url + apiUrl;
     await _getToken();
     return await get(
-        fullUrl,,
+        fullUrl,
         headers: _setHeaders()
     );
   }
