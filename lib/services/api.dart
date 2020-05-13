@@ -7,7 +7,7 @@ class Api{
   final String _url = 'http://192.168.1.7:8000/api';
   var token;
 
-  _getToken() async {
+  void _getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     token = jsonDecode(localStorage.getString('token'))['token'];
   }
