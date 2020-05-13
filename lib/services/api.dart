@@ -22,7 +22,7 @@ class Api{
   }
 
   Future getData(String apiUrl) async {
-    var fullUrl = _url + apiUrl;
+    String fullUrl = _url + apiUrl;
     await _getToken();
     return await get(
         fullUrl,
