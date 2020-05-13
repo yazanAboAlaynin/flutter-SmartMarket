@@ -13,7 +13,7 @@ class Api{
   }
 
   Future authData(dynamic data,String apiUrl) async {
-    var fullUrl = _url + apiUrl;
+    String fullUrl = _url + apiUrl;
     return await post(
         fullUrl,
         body: jsonEncode(data),
