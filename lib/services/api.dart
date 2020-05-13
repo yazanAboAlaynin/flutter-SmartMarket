@@ -30,7 +30,7 @@ class Api{
     );
   }
 
-  Map _setHeaders() => {
+  Map<String,String> _setHeaders() => {
     'Content-type' : 'application/json',
     'Accept' : 'application/json',
     //'Authorization' : 'Bearer $token'
