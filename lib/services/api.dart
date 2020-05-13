@@ -12,7 +12,7 @@ class Api{
     token = jsonDecode(localStorage.getString('token'))['token'];
   }
 
-  Future authData(dynamic data,String apiUrl) async {
+   Future authData(dynamic data,String apiUrl) async {
     String fullUrl = _url + apiUrl;
     return await post(
         fullUrl,
