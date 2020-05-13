@@ -133,7 +133,7 @@ class _LoginState extends State<Login> {
                                     };
                                     Response response =
                                         await Api().authData(data, '/login');
-                                    Map<String,String> body = json.decode(response.body);
+                                    Map<String,dynamic> body = json.decode(response.body);
 
                                     if (body['success'] != null) {
                                       print('here');
