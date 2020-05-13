@@ -5,14 +5,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Api{
   final String _url = 'http://192.168.1.7:8000/api';
-  var token;
+  String token;
 
-  void _getToken() async {
+  Future _getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     token = jsonDecode(localStorage.getString('token'))['token'];
   }
 
-  authData(data, apiUrl) async {
+  Future authData(data, apiUrl) async {
     var fullUrl = _url + apiUrl;
     return await post(
         fullUrl,
@@ -21,7 +21,7 @@ class Api{
     );
   }
 
-  getData(apiUrl) async {
+  Future getData(apiUrl) async {
     var fullUrl = _url + apiUrl;
     await _getToken();
     return await get(
