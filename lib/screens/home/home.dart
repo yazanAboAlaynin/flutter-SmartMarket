@@ -173,7 +173,7 @@ class _HomeState extends State<Home> {
                         child: Text('Categories',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
                       ),
                       // =========Category===========
-                      CategoryWidgetArea(),
+                      DisplayWidgetArea(name: "categoryItems", pathImg: "categoryImage",),
 
                       // ========Text brand============
                       Padding(
@@ -183,7 +183,7 @@ class _HomeState extends State<Home> {
 
                       // ========Brand=========
                       SizedBox(height: 10.0,),
-                      BrandWidgetArea(),
+                      DisplayWidgetArea(name: "brandItems",pathImg: "brandImage",),
 
                       // ========Text MostSelling============
                       Padding(
@@ -193,7 +193,7 @@ class _HomeState extends State<Home> {
 
                       // ========MostSelling=========
                       SizedBox(height: 10.0,),
-                      MostSellingWidgetArea(),
+                      DisplayWidgetArea(name: "mostSellingItems",pathImg: "mostSellingImage",),
 
                     ],
                   ),
@@ -208,16 +208,25 @@ class _HomeState extends State<Home> {
 }
 
 
-class CategoryWidgetArea extends StatelessWidget {
+class DisplayWidgetArea extends StatelessWidget {
+
+  String name ;
+  String pathImg ;
+
+
+  DisplayWidgetArea({this.name, this.pathImg});
+
   @override
   Widget build(BuildContext context) {
+
+
     var screenWidth = MediaQuery.of(context).size.width;
 
-    // ===========width of the category================
+    // ===========width of the Display================
     PageController controller =
     PageController(viewportFraction: 0.6, initialPage: 1);
 
-    // ==============list of categories=====================
+    // ==============list of Displays=====================
     List<Widget> categories = new List<Widget>();
 
     for (int x = 0; x < categoryItems.length; x++) {
@@ -289,172 +298,7 @@ class CategoryWidgetArea extends StatelessWidget {
     );
 
   }
+
 }
 
 
-class BrandWidgetArea extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var screenWidth = MediaQuery.of(context).size.width;
-
-    // ===========design width of the brand================
-    PageController controller =
-    PageController(viewportFraction: 0.6, initialPage: 1);
-
-    // ==============list of brands=====================
-    List<Widget> brands = new List<Widget>();
-
-    for (int x = 0; x < categoryItems.length; x++) {
-      var brandView = Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Container(
-          child: Stack(
-            fit: StackFit.expand,
-            children: <Widget>[
-              // ==========shadow of box===================
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(26.0)),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey[900],
-                          offset: Offset(2.0, 2.0),
-                          blurRadius: 6.0,
-                          spreadRadius: 1.0)
-                    ]),
-              ),
-              // ==========image in box =================
-              ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                child: Image.asset(
-                  brandImage[x],
-                  fit: BoxFit.cover,
-                ),
-              ),
-              // ==========shadow above the image==============
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Colors.transparent, Colors.black])),
-              ),
-              // ===============text above the image ==================
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      brandItems[x],
-                      style: TextStyle(fontSize: 25.0, color: Colors.white),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      );
-      // ==========var add to list=================
-      brands.add(brandView);
-    }
-    //============design box============
-    return Container(
-      width: screenWidth,
-      height: screenWidth * 9 / 23,
-      child: PageView(
-        controller: controller,
-        scrollDirection: Axis.horizontal,
-        children: brands,
-      ),
-    );
-
-  }
-}
-
-
-class MostSellingWidgetArea extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var screenWidth = MediaQuery.of(context).size.width;
-
-    // ===========design width of the Most selling================
-    PageController controller =
-    PageController(viewportFraction: 0.6, initialPage: 1);
-
-    // ==============list of Most selling=====================
-    List<Widget> mostSellings = new List<Widget>();
-
-    for (int x = 0; x < categoryItems.length; x++) {
-      var mostSellingView = Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Container(
-          child: Stack(
-            fit: StackFit.expand,
-            children: <Widget>[
-              // ==========shadow of box===================
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(26.0)),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey[900],
-                          offset: Offset(2.0, 2.0),
-                          blurRadius: 6.0,
-                          spreadRadius: 1.0)
-                    ]),
-              ),
-              // ==========image in box =================
-              ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                child: Image.asset(
-                  mostSellingImage[x],
-                  fit: BoxFit.cover,
-                ),
-              ),
-              // ==========shadow above the image==============
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Colors.transparent, Colors.black])),
-              ),
-              // ===============text above the image ==================
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      mostSellingItems[x],
-                      style: TextStyle(fontSize: 25.0, color: Colors.white),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      );
-      // ==========var add to list=================
-      mostSellings.add(mostSellingView);
-    }
-    //============design box============
-    return Container(
-      width: screenWidth,
-      height: screenWidth * 9 / 23,
-      child: PageView(
-        controller: controller,
-        scrollDirection: Axis.horizontal,
-        children: mostSellings,
-      ),
-    );
-
-  }
-}
