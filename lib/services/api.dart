@@ -46,7 +46,7 @@ class Api{
     Response response = await Api().getData('/categories');
     var categories = json.decode(
         response.body)['success']['categories'] as List;
-    List<Item> myModels = categories.map((i) => Item.fromJson(i)).toList();
+    List<Item> myModels = categories.map(( dynamic i) => Item.fromJson(i)).toList();
     return myModels;
   }
 
@@ -54,7 +54,7 @@ class Api{
     Response response = await Api().getData('/brands');
     var categories = json.decode(
         response.body)['success']['brands'] as List;
-    List<Item> myModels = categories.map((i) => Item.fromJson(i)).toList();
+    List<Item> myModels = categories.map((dynamic i) => Item.fromJson(i)).toList();
     return myModels;
   }
 
@@ -62,7 +62,7 @@ class Api{
     Response response = await Api().getData('/sellers');
     var categories = json.decode(
         response.body)['success']['sellers'] as List;
-    List<Item> myModels = categories.map((i) => Item.fromJson(i)).toList();
+    List<Item> myModels = categories.map((dynamic i) => Item.fromJson(i)).toList();
     return myModels;
   }
 
