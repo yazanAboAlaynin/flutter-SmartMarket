@@ -138,7 +138,7 @@ class _LoginState extends State<Login> {
                                     Map<String, dynamic> body =
                                         json.decode(response.body);
                                     bool success = true;
-                                     success = body['success'] ?? false;
+                                     success = body['success'] == null ? false:true;
                                     if ( success) {
                                       print('here');
                                       SharedPreferences localStorage = await SharedPreferences.getInstance();
