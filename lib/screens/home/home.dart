@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
       height: 180.0,
       child: Carousel(
         boxFit: BoxFit.cover,
-         images: [
+         images: <AssetImage>[
           AssetImage('images/product7.jpg'),
           AssetImage('images/product8.jpg'),
           AssetImage('images/product10.jpg'),

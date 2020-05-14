@@ -7,11 +7,13 @@ class Api{
   final String _url = 'http://192.168.1.7:8000/api';
   String token;
 
+  // to get the token
   Future _getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     token = jsonDecode(localStorage.getString('token'))['token'];
   }
 
+  // to make post requests
    Future authData(dynamic data,String apiUrl) async {
     String fullUrl = _url + apiUrl;
     return await post(
@@ -21,6 +23,7 @@ class Api{
     );
   }
 
+  // to make get requests
   Future getData(String apiUrl) async {
     String fullUrl = _url + apiUrl;
     await _getToken();
@@ -30,6 +33,7 @@ class Api{
     );
   }
 
+  // set the headers for requests
   Map<String,String> _setHeaders() => {
     'Content-type' : 'application/json',
     'Accept' : 'application/json',

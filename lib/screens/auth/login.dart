@@ -115,7 +115,8 @@ class _LoginState extends State<Login> {
                                 height: 40,
                               ),
                               RaisedButton(
-                                shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                shape: ContinuousRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
                                 color: Colors.blue[400],
                                 child: Text(
                                   'Login',
@@ -134,7 +135,8 @@ class _LoginState extends State<Login> {
                                     };
                                     Response response =
                                         await Api().authData(data, '/login');
-                                    Map<String,dynamic> body = json.decode(response.body);
+                                    Map<String, dynamic> body =
+                                        json.decode(response.body);
 
                                     if (body['success'] != null) {
                                       print('here');
@@ -144,7 +146,7 @@ class _LoginState extends State<Login> {
                                           'token', json.encode(body['token']));
                                       localStorage.setString(
                                           'user', json.encode(body['user']));
-                                      Navigator.pushReplacement<Object,Object>(
+                                      Navigator.pushReplacement<Object, Object>(
                                         context,
                                         new MaterialPageRoute<dynamic>(
                                             builder: (context) => Home()),
@@ -154,7 +156,7 @@ class _LoginState extends State<Login> {
                                     }
 
                                     setState(() {
-                                       loading = false;
+                                      loading = false;
                                     });
                                   }
                                 },
