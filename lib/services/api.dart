@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_smartmarket/models/item.dart';
 import 'package:flutter_smartmarket/screens/home/home.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
