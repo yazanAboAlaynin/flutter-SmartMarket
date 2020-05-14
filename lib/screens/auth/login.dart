@@ -137,8 +137,9 @@ class _LoginState extends State<Login> {
                                         await Api().authData(data, '/login');
                                     Map<String, dynamic> body =
                                         json.decode(response.body);
-
-                                    if (body['success'] != null) {
+                                    bool success = true;
+                                     success = body['success'] ?? false;
+                                    if ( success) {
                                       print('here');
                                       SharedPreferences localStorage = await SharedPreferences.getInstance();
                                       localStorage.setString(

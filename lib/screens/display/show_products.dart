@@ -150,7 +150,7 @@ Widget _bulidCard(String name,String price,String imgPath){
         child: Column(
           children: [
             Hero(
-              tag: imgPath,
+              tag: new Text(''),
               child: Container(
                 height: 151.0,
                 width: 150.0,
