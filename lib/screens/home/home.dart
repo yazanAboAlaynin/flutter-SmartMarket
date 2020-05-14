@@ -1,42 +1,67 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:flutter_smartmarket/services/api.dart';
+import 'package:http/http.dart';
 
+class Item{
+  String name;
+  String image;
+  Item({this.name,this.image});
+
+  factory Item.fromJson(Map<String, dynamic> json) => Item(
+    name: json["name"],
+    image: json["image"],
+  );
+
+
+}
 
 class Home extends StatefulWidget {
+
   @override
   _HomeState createState() => _HomeState();
 }
 
-// ==========categories================
-var categoryItems = ["Laptop", "Watch", "Shoe", "Classes"];
-var categoryImage = [
-  "images/product7.jpg",
-  "images/product8.jpg",
-  "images/product10.jpg",
-  "images/product11.jpg"
-];
-// =============brand================
-var brandItems = ["Laptop", "Watch", "Shoe", "Classes"];
-var brandImage = [
-  "images/product7.jpg",
-  "images/product8.jpg",
-  "images/product10.jpg",
-  "images/product11.jpg"
-];
-// =============Most Selling=================
-var mostSellingItems = ["Laptop", "Watch", "Shoe", "Classes"];
-var mostSellingImage = [
-  "images/product7.jpg",
-  "images/product8.jpg",
-  "images/product10.jpg",
-  "images/product11.jpg"
-];
-
 class _HomeState extends State<Home> {
 
+  List<Item> categories = List<Item>();
+  Future<void> getCategories() async {
+    List<Item> x = await Api().getCategories();
+    setState(() {
+      categories = x;
+    });
+  }
+
+  List<Item> brands = List<Item>();
+  Future<void> getBrands() async {
+    List<Item> x = await Api().getBrands();
+    setState(() {
+      brands = x;
+    });
+  }
+
+  List<Item> sellers = List<Item>();
+  Future<void> getSellers() async {
+    List<Item> x = await Api().getSellers();
+    setState(() {
+      sellers = x;
+    });
+  }
+
+
+
+@override
+  void initState(){
+    // TODO: implement initState
+    super.initState();
+     getCategories();
+     getBrands();
+     getSellers();
+  }
   @override
   Widget build(BuildContext context) {
-
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
 
@@ -158,8 +183,7 @@ class _HomeState extends State<Home> {
       body: ListView(
         children: <Widget>[
           Container(
-            height: screenHeight,
-            width: screenWidth,
+
             child: SafeArea(
                 child: SingleChildScrollView(
                   child: Column(
@@ -173,7 +197,7 @@ class _HomeState extends State<Home> {
                         child: Text('Categories',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
                       ),
                       // =========Category===========
-                      DisplayWidgetArea(name: "categoryItems", pathImg: "categoryImage",),
+                      DisplayWidgetArea(itemList: categories ),
 
                       // ========Text brand============
                       Padding(
@@ -183,17 +207,17 @@ class _HomeState extends State<Home> {
 
                       // ========Brand=========
                       SizedBox(height: 10.0,),
-                      DisplayWidgetArea(name: "brandItems",pathImg: "brandImage",),
+                      DisplayWidgetArea(itemList: brands ),
 
                       // ========Text MostSelling============
                       Padding(
                         padding: const EdgeInsets.only(top: 13.0 , bottom: 1.0,left: 8.0,right: 8.0),
-                        child: Text('Most Selling',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                        child: Text('Most Sellers',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
                       ),
 
                       // ========MostSelling=========
                       SizedBox(height: 10.0,),
-                      DisplayWidgetArea(name: "mostSellingItems",pathImg: "mostSellingImage",),
+                      DisplayWidgetArea(itemList: sellers ),
 
                     ],
                   ),
@@ -210,11 +234,8 @@ class _HomeState extends State<Home> {
 
 class DisplayWidgetArea extends StatelessWidget {
 
-  String name ;
-  String pathImg ;
-
-
-  DisplayWidgetArea({this.name, this.pathImg});
+  List<Item> itemList;
+  DisplayWidgetArea({this.itemList});
 
   @override
   Widget build(BuildContext context) {
@@ -227,10 +248,11 @@ class DisplayWidgetArea extends StatelessWidget {
     PageController(viewportFraction: 0.6, initialPage: 1);
 
     // ==============list of Displays=====================
-    List<Widget> categories = new List<Widget>();
+    List<Widget> items = new List<Widget>();
 
-    for (int x = 0; x < categoryItems.length; x++) {
-      var categoryView = Padding(
+    for(int i=0;i<itemList.length;i++){
+      print(itemList[i].name);
+      var view = Padding(
         padding: EdgeInsets.all(10.0),
         child: Container(
           child: Stack(
@@ -251,8 +273,8 @@ class DisplayWidgetArea extends StatelessWidget {
               // ==========image in box=================
               ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                child: Image.asset(
-                  categoryImage[x],
+                child: Image.network(
+                  'http://192.168.1.7:8000/storage/'+itemList[i].image,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -273,7 +295,7 @@ class DisplayWidgetArea extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      categoryItems[x],
+                     itemList[i].name,
                       style: TextStyle(fontSize: 25.0, color: Colors.white),
                     ),
                   ],
@@ -284,8 +306,8 @@ class DisplayWidgetArea extends StatelessWidget {
         ),
       );
       // ==========var add to list=================
-      categories.add(categoryView);
-    }
+      items.add(view);
+    };
     //============design box============
     return Container(
       width: screenWidth,
@@ -293,12 +315,11 @@ class DisplayWidgetArea extends StatelessWidget {
       child: PageView(
         controller: controller,
         scrollDirection: Axis.horizontal,
-        children: categories,
+        children: items,
       ),
     );
-
   }
-
 }
+
 
 

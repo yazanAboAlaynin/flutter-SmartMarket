@@ -140,10 +140,10 @@ class _LoginState extends State<Login> {
 
                                     if (body['success'] != null) {
                                       print('here');
-                                      SharedPreferences localStorage =
-                                          await SharedPreferences.getInstance();
+                                      SharedPreferences localStorage = await SharedPreferences.getInstance();
                                       localStorage.setString(
-                                          'token', json.encode(body['token']));
+                                          'token', json.encode(body['success']['token']));
+                                      print(localStorage.getString('token'));
                                       localStorage.setString(
                                           'user', json.encode(body['user']));
                                       Navigator.pushReplacement<Object, Object>(

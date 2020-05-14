@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_smartmarket/screens/home/home.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,7 +11,7 @@ class Api{
   // to get the token
   Future _getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
-    token = jsonDecode(localStorage.getString('token'))['token'];
+    token = jsonDecode(localStorage.getString('token'));
   }
 
   // to make post requests
@@ -37,7 +38,32 @@ class Api{
   Map<String,String> _setHeaders() => {
     'Content-type' : 'application/json',
     'Accept' : 'application/json',
-    //'Authorization' : 'Bearer $token'
+    'Authorization' : 'Bearer $token'
   };
+
+  Future<List<Item>> getCategories() async {
+    Response response = await Api().getData('/categories');
+    var categories = json.decode(
+        response.body)['success']['categories'] as List;
+    List<Item> myModels = categories.map((i) => Item.fromJson(i)).toList();
+    return myModels;
+  }
+
+  Future<List<Item>> getBrands() async {
+    Response response = await Api().getData('/brands');
+    var categories = json.decode(
+        response.body)['success']['brands'] as List;
+    List<Item> myModels = categories.map((i) => Item.fromJson(i)).toList();
+    return myModels;
+  }
+
+  Future<List<Item>> getSellers() async {
+    Response response = await Api().getData('/sellers');
+    var categories = json.decode(
+        response.body)['success']['sellers'] as List;
+    List<Item> myModels = categories.map((i) => Item.fromJson(i)).toList();
+    return myModels;
+  }
+
 
 }
