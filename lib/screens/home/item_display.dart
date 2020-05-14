@@ -23,7 +23,7 @@ class DisplayWidgetArea extends StatelessWidget {
       print(itemList[i].name);
       var view = InkWell(
         onTap: (){
-          Navigator.push(context, new MaterialPageRoute<dynamic>(
+          Navigator.push<Object>(context, new MaterialPageRoute<dynamic>(
               builder: (context) => DetailsPage()));
         },
         child: Padding(
