@@ -5,8 +5,9 @@ import 'package:flutter_smartmarket/screens/display/show_products.dart';
 import 'home.dart';
 
 class DisplayWidgetArea extends StatelessWidget {
+  String type;
   List<Item> itemList;
-  DisplayWidgetArea({this.itemList});
+  DisplayWidgetArea({this.itemList,this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class DisplayWidgetArea extends StatelessWidget {
       var view = InkWell(
         onTap: (){
           Navigator.push<Object>(context, new MaterialPageRoute<dynamic>(
-              builder: (context) => DetailsPage()));
+              builder: (context) => ShowProducts(item: itemList[i],type: type)));
         },
         child: Padding(
           padding: EdgeInsets.all(10.0),

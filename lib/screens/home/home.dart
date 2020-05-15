@@ -42,7 +42,6 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getCategories();
     getBrands();
@@ -105,16 +104,20 @@ class _HomeState extends State<Home> {
                     child: Text(
                       'Categories',
                       style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold,),
                     ),
                   ),
                   // =========Category===========
-                  DisplayWidgetArea(itemList: categories),
+                  DisplayWidgetArea(itemList: categories,type: 'category',),
 
                   // ========Text brand============
+                  SizedBox(
+                    height: 20.0,
+                  ),
+
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 13.0, bottom: 1.0, left: 8.0, right: 8.0),
+                        top: 8.0, bottom: 2.0, left: 8.0, right: 8.0),
                     child: Text(
                       'Brand',
                       style:
@@ -123,15 +126,16 @@ class _HomeState extends State<Home> {
                   ),
 
                   // ========Brand=========
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  DisplayWidgetArea(itemList: brands),
+
+                  DisplayWidgetArea(itemList: brands,type: 'brand',),
 
                   // ========Text MostSelling============
+                  SizedBox(
+                    height: 20.0,
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 13.0, bottom: 1.0, left: 8.0, right: 8.0),
+                        top: 8.0, bottom: 2.0, left: 8.0, right: 8.0),
                     child: Text(
                       'Most Sellers',
                       style:
@@ -140,10 +144,8 @@ class _HomeState extends State<Home> {
                   ),
 
                   // ========MostSelling=========
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  DisplayWidgetArea(itemList: sellers),
+
+                  DisplayWidgetArea(itemList: sellers,type: 'seller',),
                 ],
               ),
             )),

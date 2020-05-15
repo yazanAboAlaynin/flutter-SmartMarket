@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_smartmarket/models/item.dart';
+import 'package:flutter_smartmarket/models/product.dart';
 import 'package:flutter_smartmarket/screens/home/home.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,18 +53,50 @@ class Api{
 
   Future<List<Item>> getBrands() async {
     Response response = await Api().getData('/brands');
-    var categories = json.decode(
+    var brands = json.decode(
         response.body)['success']['brands'] as List;
-    List<Item> myModels = categories.map((dynamic i) => Item.fromJson(i)).toList();
+    List<Item> myModels = brands.map((dynamic i) => Item.fromJson(i)).toList();
     return myModels;
   }
 
   Future<List<Item>> getSellers() async {
     Response response = await Api().getData('/sellers');
-    var categories = json.decode(
+    var sellers = json.decode(
         response.body)['success']['sellers'] as List;
-    List<Item> myModels = categories.map((dynamic i) => Item.fromJson(i)).toList();
+    List<Item> myModels = sellers.map((dynamic i) => Item.fromJson(i)).toList();
     return myModels;
+  }
+
+  Future<List<Product>> getProducts(String s,int id) async {
+    switch(s){
+      case 'category':
+        Response response = await Api().getData('/products/category/$id');
+        //print(response.body);
+        var products = json.decode(
+            response.body)['products'] as List;
+        List<Product> myModels = products.map((dynamic i) => Product.fromJson(i)).toList();
+        //print(myModels);
+        return myModels;
+
+      case 'brand':
+        Response response = await Api().getData('/products/brand/$id');
+        //print(response.body);
+        var products = json.decode(
+            response.body)['products'] as List;
+        List<Product> myModels = products.map((dynamic i) => Product.fromJson(i)).toList();
+        //print(myModels);
+        return myModels;
+
+      case 'seller':
+        Response response = await Api().getData('/products/seller/$id');
+        //print(response.body);
+        var products = json.decode(
+            response.body)['products'] as List;
+        List<Product> myModels = products.map((dynamic i) => Product.fromJson(i)).toList();
+        //print(myModels);
+        return myModels;
+    }
+
   }
 
 
