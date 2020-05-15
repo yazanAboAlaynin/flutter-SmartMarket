@@ -50,7 +50,7 @@ class DisplayWidgetArea extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(20.0)),
                   child: Image.network(
-                    'http://192.168.1.7:8000/storage/' + itemList[i].image,
+                    'https://192.168.1.10:8000/storage/' + itemList[i].image,
                     fit: BoxFit.cover,
                   ),
                 ),
