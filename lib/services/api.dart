@@ -7,9 +7,11 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Api{
-  final String _url = 'https://192.168.1.10:8000/api';
+  final String _url = 'http://192.168.1.7:8000/api';
+  final String _images_url = 'http://192.168.1.7:8000/storage/';
   String token='';
 
+  String getImagesUrl() => _images_url;
   // to get the token
   Future _getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();

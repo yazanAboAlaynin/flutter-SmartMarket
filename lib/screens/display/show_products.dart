@@ -87,7 +87,7 @@ class _ShowProductsState extends State<ShowProducts> {
                   tag: "tag",
                   child: CircleAvatar(
                     backgroundImage: NetworkImage(
-                        'http://192.168.1.7:8000/storage/' +
+                        Api().getImagesUrl() +
                             widget.item.image),
                   ),
                 ),

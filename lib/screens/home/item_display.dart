@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smartmarket/models/item.dart';
 import 'package:flutter_smartmarket/screens/display/show_products.dart';
+import 'package:flutter_smartmarket/services/api.dart';
 
 import 'home.dart';
 
@@ -50,7 +51,7 @@ class DisplayWidgetArea extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(20.0)),
                   child: Image.network(
-                    'https://192.168.1.10:8000/storage/' + itemList[i].image,
+                    Api().getImagesUrl() + itemList[i].image,
                     fit: BoxFit.cover,
                   ),
                 ),
