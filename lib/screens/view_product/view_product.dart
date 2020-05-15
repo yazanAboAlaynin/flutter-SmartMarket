@@ -105,7 +105,38 @@ class _ProductDetailsState extends State<ProductDetails> {
                         builder: (context) {
                           return AlertDialog(
                             title: Text('Size'),
-                            content: Text('Chooes the size'),
+                            content: ListView(
+                              children: <Widget>[
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        ButtonBar(
+                                          alignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              'r 1',
+                                              style: new TextStyle(fontSize: 16.0),
+                                            ),
+                                            Radio(
+                                                value: 1,
+                                                groupValue: 0,
+                                                activeColor: Colors.green[200],
+                                                onChanged: null,
+                                            ),
+
+
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+
+                                  ],
+                                ),
+                              ],
+                            ),
                             actions: <Widget>[
                               MaterialButton(
                                 onPressed: () {
