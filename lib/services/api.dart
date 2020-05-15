@@ -101,5 +101,11 @@ class Api{
 
   }
 
+  Future<String> getProductCategory(int id) async{
+    Response response = await Api().getData('/product/$id/category/');
+    String category = json.decode(response.body)['category'];
+    return category;
+  }
+
 
 }

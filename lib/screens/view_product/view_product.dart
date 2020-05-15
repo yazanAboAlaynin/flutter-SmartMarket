@@ -12,6 +12,19 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+  String category = '';
+  String brand = '';
+  Future<void> getCategory() async {
+    String x = await Api().getProductCategory(widget.product.id);
+    setState(() {
+      category = x;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -203,7 +216,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   color: Colors.blue[200],
                   textColor: Colors.white,
                   elevation: 0.2,
-                  child: Text('Buy now'),
+                  child: Text('Add to cart'),
                 ),
               ),
               IconButton(
@@ -225,11 +238,11 @@ class _ProductDetailsState extends State<ProductDetails> {
           ),
           ListTile(
             title: Text(
-              'product details',
+              'Product details',
               style: TextStyle(fontWeight: FontWeight.w400),
             ),
             subtitle: Text(
-                'A shoe is an item of footwear intended to protect and comfort the human foot. Shoes are also used as an item of decoration and fashion. The design of shoes has varied enormously through time and from culture to culture, with appearance originally being tied to function.'),
+                widget.product.description),
           ),
           Divider(
             endIndent: 20.0,
@@ -242,13 +255,13 @@ class _ProductDetailsState extends State<ProductDetails> {
               Padding(
                 padding: EdgeInsets.fromLTRB(12.0, 5.0, 5.0, 5.0),
                 child: Text(
-                  'Category Name',
+                  'Category name',
                   style: TextStyle(color: Colors.grey),
                 ),
               ),
               Padding(
                 padding: EdgeInsets.all(5.0),
-                child: Text('laptop'),
+                child: Text(Api()),
               ),
             ],
           ),
