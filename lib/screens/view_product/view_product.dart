@@ -87,7 +87,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 child: MaterialButton(
                   elevation: 0.2,
                   onPressed: () {
-                    showDialog(
+                    showDialog<Widget>(
                         context: context,
                         builder: (context) {
                           return AlertDialog(
@@ -124,7 +124,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 child: MaterialButton(
                   elevation: 0.2,
                   onPressed: () {
-                    showDialog(
+                    showDialog<Widget>(
                         context: context,
                         builder: (context) {
                           return AlertDialog(
@@ -160,7 +160,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 child: MaterialButton(
                   elevation: 0.2,
                   onPressed: () {
-                    showDialog(
+                    showDialog<Widget>(
                         context: context,
                         builder: (context) {
                           return AlertDialog(
