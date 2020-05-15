@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_smartmarket/models/item.dart';
 import 'package:flutter_smartmarket/services/api.dart';
+import 'package:flutter_smartmarket/shared/loading.dart';
 import 'package:flutter_smartmarket/shared/my_drawer.dart';
+import 'package:flutter_smartmarket/shared/waiting.dart';
 import 'package:http/http.dart';
 
 import 'image_carusel.dart';
@@ -16,27 +18,44 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool loading1 = false;
+  bool loading2 = false;
+  bool loading3 = false;
+
   List<Item> categories = List<Item>();
   Future<void> getCategories() async {
+    setState(() {
+      loading1 = true;
+    });
     List<Item> x = await Api().getCategories();
     setState(() {
       categories = x;
+      loading1 = false;
     });
+
   }
 
   List<Item> brands = List<Item>();
   Future<void> getBrands() async {
+    setState(() {
+      loading2 = true;
+    });
     List<Item> x = await Api().getBrands();
     setState(() {
       brands = x;
+      loading2 = false;
     });
   }
 
   List<Item> sellers = List<Item>();
   Future<void> getSellers() async {
+    setState(() {
+      loading3 = true;
+    });
     List<Item> x = await Api().getSellers();
     setState(() {
       sellers = x;
+      loading3 = false;
     });
   }
 
@@ -108,7 +127,7 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   // =========Category===========
-                  DisplayWidgetArea(itemList: categories,type: 'category',),
+                  loading1 ? Waiting() : DisplayWidgetArea(itemList: categories,type: 'category',),
 
                   // ========Text brand============
                   SizedBox(
@@ -127,7 +146,7 @@ class _HomeState extends State<Home> {
 
                   // ========Brand=========
 
-                  DisplayWidgetArea(itemList: brands,type: 'brand',),
+                  loading2 ? Waiting() : DisplayWidgetArea(itemList: brands,type: 'brand',),
 
                   // ========Text MostSelling============
                   SizedBox(
@@ -145,7 +164,7 @@ class _HomeState extends State<Home> {
 
                   // ========MostSelling=========
 
-                  DisplayWidgetArea(itemList: sellers,type: 'seller',),
+                  loading3 ? Waiting() : DisplayWidgetArea(itemList: sellers,type: 'seller',),
                 ],
               ),
             )),

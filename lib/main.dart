@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_smartmarket/screens/wrapper.dart';
-import 'package:flutter_smartmarket/shared/loading.dart';
 
 
 void main() => runApp(MyApp());
@@ -11,7 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-        home: Loading(),
+        home: CheckAuth(),
       );
   }
 }

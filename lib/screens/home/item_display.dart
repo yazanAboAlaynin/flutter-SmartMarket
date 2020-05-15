@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smartmarket/models/item.dart';
 import 'package:flutter_smartmarket/screens/display/show_products.dart';
@@ -11,11 +12,11 @@ class DisplayWidgetArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var screenWidth = MediaQuery.of(context).size.width;
+    var screenWidth = MediaQuery.of(context).size.width * 6 / 4;
 
     // ===========width of the Display================
     PageController controller =
-        PageController(viewportFraction: 0.6, initialPage: 1);
+        PageController(viewportFraction: 0.6, initialPage: 0);
 
     // ==============list of Displays=====================
     List<Widget> items = new List<Widget>();
@@ -60,7 +61,7 @@ class DisplayWidgetArea extends StatelessWidget {
                       gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
-                          colors: [Colors.transparent, Colors.black])),
+                          colors: [Colors.transparent, Colors.black26])),
                 ),
                 // ===============text above the image ==================
                 Padding(
@@ -88,8 +89,10 @@ class DisplayWidgetArea extends StatelessWidget {
     //============design box============
     return Container(
       width: screenWidth,
-      height: screenWidth * 9 / 23,
+      height: screenWidth * 9 / 28,
       child: PageView(
+        reverse: false,
+        dragStartBehavior: DragStartBehavior.start,
         controller: controller,
         scrollDirection: Axis.horizontal,
         children: items,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_smartmarket/shared/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'auth/authenticate.dart';
 import 'home/home.dart';
@@ -10,10 +11,11 @@ class CheckAuth extends StatefulWidget {
 
 class _CheckAuthState extends State<CheckAuth> {
   bool isAuth = false;
+  bool loading = true;
   @override
   void initState() {
-    _checkIfLoggedIn();
     super.initState();
+    _checkIfLoggedIn();
   }
 
   void _checkIfLoggedIn() async{
@@ -25,6 +27,9 @@ class _CheckAuthState extends State<CheckAuth> {
         isAuth = true;
       });
     }
+    setState(() {
+      loading = false;
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -34,7 +39,7 @@ class _CheckAuthState extends State<CheckAuth> {
     } else {
       child = Authenticate();
     }
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       body: child,
     );
   }
