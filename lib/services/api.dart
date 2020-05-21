@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_smartmarket/models/item.dart';
 import 'package:flutter_smartmarket/models/product.dart';
 import 'package:flutter_smartmarket/models/property.dart';
+import 'package:flutter_smartmarket/models/user.dart';
 import 'package:flutter_smartmarket/screens/home/home.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -132,11 +133,11 @@ class Api{
 
   Future<List<Property>> otherProperties(int id) async{
     Response response = await Api().getData('/product/$id/other');
-    print(response.body);
+    //print(response.body);
     var property = json.decode(
         response.body)['other'] as List;
     List<Property> myModels = property.map((dynamic i) => Property.fromJson(i)).toList();
-    print(myModels);
+    //print(myModels);
     return myModels;
   }
 
@@ -163,10 +164,22 @@ class Api{
     return myModels;
   }
 
-  Future<bool> order(Map<int,int> m) async{
-    var data = {
-      'cart': m,
-    };
+  Future<User> profile() async{
+    Response response = await Api().getData('/profile');
+    print(response.body);
+    var user = json.decode(
+        response.body)['user'];
+    User myModels = User(
+      id: user["id"],
+      name: user["name"],
+      image: user["image"],
+      email: user["email"],
+      password: user["password"],
+      dob: user["dob"],
+      mobile: user["mobile"],
+    );
+    //print(myModels);
+    return myModels;
 
   }
 

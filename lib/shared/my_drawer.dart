@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_smartmarket/screens/profile/profile.dart';
 
 class MyDrawer extends StatelessWidget {
   @override
@@ -31,7 +32,10 @@ class MyDrawer extends StatelessWidget {
           ),
         ),
         InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.push<Object>(context, new MaterialPageRoute<dynamic>(
+                builder: (context) => Profile()));
+          },
           child: ListTile(
             title: Text('My Accuont'),
             leading: Icon(
