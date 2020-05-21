@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_smartmarket/models/item.dart';
+import 'package:flutter_smartmarket/screens/cart/cart_view.dart';
 import 'package:flutter_smartmarket/services/api.dart';
 import 'package:flutter_smartmarket/shared/loading.dart';
 import 'package:flutter_smartmarket/shared/my_drawer.dart';
@@ -95,7 +96,10 @@ class _HomeState extends State<Home> {
               Icons.shopping_cart,
               color: Colors.white,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push<Object>(context, new MaterialPageRoute<dynamic>(
+                  builder: (context) => CartView()));
+            },
           )
         ],
       ),

@@ -2,13 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter_smartmarket/models/item.dart';
 import 'package:flutter_smartmarket/models/product.dart';
+import 'package:flutter_smartmarket/models/property.dart';
 import 'package:flutter_smartmarket/screens/home/home.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Api{
-  final String _url = 'http://192.168.1.7:8000/api';
-  final String _images_url = 'http://192.168.1.7:8000/storage/';
+  final String _url = 'http://192.168.1.8:8000/api';
+  final String _images_url = 'http://192.168.1.8:8000/storage/';
   String token='';
 
   String getImagesUrl() => _images_url;
@@ -34,6 +35,16 @@ class Api{
     await _getToken();
     return await get(
         fullUrl,
+        headers: _setHeaders()
+    );
+  }
+
+  Future sendData(dynamic data,String apiUrl) async {
+    String fullUrl = _url + apiUrl;
+    await _getToken();
+    return await post(
+        fullUrl,
+        body: jsonEncode(data),
         headers: _setHeaders()
     );
   }
@@ -102,9 +113,61 @@ class Api{
   }
 
   Future<String> getProductCategory(int id) async{
-    Response response = await Api().getData('/product/$id/category/');
+    Response response = await Api().getData('/product/$id/category');
+    //print(response.body);
     String category = json.decode(response.body)['category'];
+
     return category;
+  }
+
+  Future<List<Property>> getProductProperties(int id) async{
+    Response response = await Api().getData('/product/$id/prop');
+    //print(response.body);
+    var property = json.decode(
+        response.body)['properties'] as List;
+    List<Property> myModels = property.map((dynamic i) => Property.fromJson(i)).toList();
+   // print(myModels);
+    return myModels;
+  }
+
+  Future<List<Property>> otherProperties(int id) async{
+    Response response = await Api().getData('/product/$id/other');
+    print(response.body);
+    var property = json.decode(
+        response.body)['other'] as List;
+    List<Property> myModels = property.map((dynamic i) => Property.fromJson(i)).toList();
+    print(myModels);
+    return myModels;
+  }
+
+  Future<Product> getProduct(int id) async{
+    Response response = await Api().getData('/product/$id');
+    print(response.body);
+    var product = json.decode(
+        response.body)['product'];
+    Product myModels = Product(
+      id: product['id'],
+      name: product['name'],
+      image: product['image'],
+      price: product['price'],
+      description: product['description'],
+      brand_id: product['brand_id'],
+      category_id: product['category_id'],
+      discount: product['discount'],
+      item_num: product['item_num'],
+      quantity: product['quantity'],
+      vendor_id: product['vendor_id'],
+
+    );
+    print(myModels);
+    return myModels;
+  }
+
+  Future<bool> order(Map<int,int> m) async{
+    var data = {
+      'cart': m,
+    };
+
   }
 
 

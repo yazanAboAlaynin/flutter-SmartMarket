@@ -13,7 +13,7 @@ class MyProducts extends StatelessWidget {
       Widget product = InkWell(
         onTap: () {
           Navigator.push<Object>(context, new MaterialPageRoute<dynamic>(
-              builder: (context) => ProductDetails(product: productsList[i])));
+              builder: (context) => ProductDetails(id: productsList[i].id)));
         },
         child: Padding(
           padding: EdgeInsets.only(top: 5.0, right: 5.0, left: 5.0, bottom: 5.0),
