@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_smartmarket/models/item.dart';
+import 'package:flutter_smartmarket/models/product.dart';
 import 'package:flutter_smartmarket/screens/cart/cart_view.dart';
+import 'package:flutter_smartmarket/screens/display/products_card.dart';
 import 'package:flutter_smartmarket/services/api.dart';
 import 'package:flutter_smartmarket/shared/loading.dart';
 import 'package:flutter_smartmarket/shared/my_drawer.dart';
@@ -33,7 +35,6 @@ class _HomeState extends State<Home> {
       categories = x;
       loading1 = false;
     });
-
   }
 
   List<Item> brands = List<Item>();
@@ -89,7 +90,9 @@ class _HomeState extends State<Home> {
               Icons.search,
               color: Colors.white,
             ),
-            onPressed: () {},
+            onPressed: () {
+              showSearch(context: context, delegate: DataSearch());
+            },
           ),
           IconButton(
             icon: Icon(
@@ -97,8 +100,10 @@ class _HomeState extends State<Home> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.push<Object>(context, new MaterialPageRoute<dynamic>(
-                  builder: (context) => CartView()));
+              Navigator.push<Object>(
+                  context,
+                  new MaterialPageRoute<dynamic>(
+                      builder: (context) => CartView()));
             },
           )
         ],
@@ -126,12 +131,19 @@ class _HomeState extends State<Home> {
                         top: 8.0, bottom: 2.0, left: 8.0, right: 8.0),
                     child: Text(
                       'Categories',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold,),
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   // =========Category===========
-                  loading1 ? Waiting() : DisplayWidgetArea(itemList: categories,type: 'category',),
+                  loading1
+                      ? Waiting()
+                      : DisplayWidgetArea(
+                          itemList: categories,
+                          type: 'category',
+                        ),
 
                   // ========Text brand============
                   SizedBox(
@@ -150,7 +162,12 @@ class _HomeState extends State<Home> {
 
                   // ========Brand=========
 
-                  loading2 ? Waiting() : DisplayWidgetArea(itemList: brands,type: 'brand',),
+                  loading2
+                      ? Waiting()
+                      : DisplayWidgetArea(
+                          itemList: brands,
+                          type: 'brand',
+                        ),
 
                   // ========Text MostSelling============
                   SizedBox(
@@ -168,7 +185,12 @@ class _HomeState extends State<Home> {
 
                   // ========MostSelling=========
 
-                  loading3 ? Waiting() : DisplayWidgetArea(itemList: sellers,type: 'seller',),
+                  loading3
+                      ? Waiting()
+                      : DisplayWidgetArea(
+                          itemList: sellers,
+                          type: 'seller',
+                        ),
                 ],
               ),
             )),
@@ -178,3 +200,85 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+class DataSearch extends SearchDelegate<String> {
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(
+          Icons.clear,
+        ),
+        onPressed: () {
+          query ='';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+
+    return IconButton(
+      icon: AnimatedIcon(
+        icon: AnimatedIcons.menu_arrow,
+        progress: transitionAnimation,
+      ),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+
+    return ShowPs(query: query,);
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+
+    return Container();
+  }
+}
+
+class ShowPs extends StatefulWidget {
+  String query;
+  ShowPs({this.query});
+  @override
+  _ShowPsState createState() => _ShowPsState();
+}
+
+class _ShowPsState extends State<ShowPs> {
+  List<Product> products = List<Product>();
+  Future<void> getProducts() async {
+    var data = {
+      'query': widget.query,
+    };
+    List<Product> x = await Api().search(data);
+    setState(() {
+      products = x;
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    getProducts();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(right: 15.0),
+          width: MediaQuery.of(context).size.width - 30.0,
+          height: MediaQuery.of(context).size.height - 250,
+          child: MyProducts(productsList: products),
+        ),
+      ],
+    );
+  }
+}
+
