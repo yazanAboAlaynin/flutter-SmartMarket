@@ -64,6 +64,7 @@ class _RegisterState extends State<Register> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
+
                 // =========== design =================
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
@@ -85,6 +86,24 @@ class _RegisterState extends State<Register> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  RaisedButton(
+                                    onPressed: (){
+                                      widget.toggleView();
+                                    },
+                                    shape: ContinuousRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20)),
+                                    color: Colors.blue[400],
+                                    child: Text(
+                                      'Login',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],),
                               SizedBox(
                                 height: 10,
                               ),

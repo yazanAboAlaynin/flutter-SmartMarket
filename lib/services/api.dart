@@ -121,6 +121,14 @@ class Api{
     return category;
   }
 
+  Future<String> getProductBrand(int id) async{
+    Response response = await Api().getData('/product/$id/brand');
+    //print(response.body);
+    String brand = json.decode(response.body)['brand'];
+
+    return brand;
+  }
+
   Future<List<Property>> getProductProperties(int id) async{
     Response response = await Api().getData('/product/$id/prop');
     //print(response.body);

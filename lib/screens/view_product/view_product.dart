@@ -34,6 +34,13 @@ class _ProductDetailsState extends State<ProductDetails> {
     });
   }
 
+  Future<void> getBrand() async {
+    String x = await Api().getProductBrand(product.id);
+    setState(() {
+      brand = x;
+    });
+  }
+
   Future<void> getProductProperties() async {
     List<Property> x = await Api().getProductProperties(product.id);
     setState(() {
@@ -56,6 +63,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       loading = false;
     });
     getCategory();
+    getBrand();
     getProductProperties();
   }
 
@@ -281,7 +289,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                     Padding(
                       padding: EdgeInsets.all(5.0),
-                      child: Text('4.5'),
+                      child: Text(brand),
                     ),
                   ],
                 ),

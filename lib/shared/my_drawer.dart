@@ -1,18 +1,59 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_smartmarket/screens/profile/profile.dart';
+import 'dart:convert';
 
-class MyDrawer extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_smartmarket/models/user.dart';
+import 'package:flutter_smartmarket/screens/auth/authenticate.dart';
+import 'package:flutter_smartmarket/screens/auth/login.dart';
+import 'package:flutter_smartmarket/screens/cart/cart_view.dart';
+import 'package:flutter_smartmarket/screens/home/home.dart';
+import 'package:flutter_smartmarket/screens/profile/profile.dart';
+import 'package:flutter_smartmarket/services/api.dart';
+import 'package:flutter_smartmarket/shared/waiting.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class MyDrawer extends StatefulWidget {
+  @override
+  _MyDrawerState createState() => _MyDrawerState();
+}
+
+class _MyDrawerState extends State<MyDrawer> {
+  User user;
+  bool loading = true;
+  Future<void> getData()async{
+    User u = await Api().profile();
+    setState(() {
+      user = u;
+      loading = false;
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+  void logout() async{
+    var res = await Api().getData('/logout');
+    var body = json.decode(res.body);
+    print(body);
+    if(body['success']!= null){
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.remove('user');
+      localStorage.remove('token');
+      Navigator.pushReplacement<Object,Object>(context, new MaterialPageRoute<dynamic>(
+          builder: (context) => Authenticate()));
+    }
+  }
   @override
   Widget build(BuildContext context) {
-    return  ListView(
+    return loading? Waiting() : ListView(
       children: <Widget>[
         // ====== start header ===
         UserAccountsDrawerHeader(
-          accountName: Text('Mohammad Sulaiman'),
-          accountEmail: Text('mohammadsulaiman@gmail.com'),
+          accountName: Text(user.name),
+          accountEmail: Text(user.email),
           currentAccountPicture: GestureDetector(
             child: CircleAvatar(
-              backgroundImage: AssetImage('images/p.jpg'),
+              backgroundImage: NetworkImage(Api().getImagesUrl()+user.image),
             ),
           ),
           decoration: BoxDecoration(
@@ -22,7 +63,10 @@ class MyDrawer extends StatelessWidget {
 
         // ====== start body in the side bar ====
         InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.push<Object>(context, new MaterialPageRoute<dynamic>(
+                builder: (context) => Home()));
+          },
           child: ListTile(
             title: Text('Home Page'),
             leading: Icon(
@@ -37,7 +81,7 @@ class MyDrawer extends StatelessWidget {
                 builder: (context) => Profile()));
           },
           child: ListTile(
-            title: Text('My Accuont'),
+            title: Text('Profile'),
             leading: Icon(
               Icons.person,
               color: Colors.red,
@@ -45,7 +89,9 @@ class MyDrawer extends StatelessWidget {
           ),
         ),
         InkWell(
-          onTap: () {},
+          onTap: () {
+
+          },
           child: ListTile(
             title: Text('My Orders'),
             leading: Icon(
@@ -55,7 +101,10 @@ class MyDrawer extends StatelessWidget {
           ),
         ),
         InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.push<Object>(context, new MaterialPageRoute<dynamic>(
+                builder: (context) => CartView()));
+          },
           child: ListTile(
             title: Text('Shopping Cart'),
             leading: Icon(
@@ -100,6 +149,18 @@ class MyDrawer extends StatelessWidget {
             leading: Icon(
               Icons.help,
               color: Colors.blue[600],
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            logout();
+          },
+          child: ListTile(
+            title: Text('Logout'),
+            leading: Icon(
+              Icons.highlight_off,
+              color: Colors.red[600],
             ),
           ),
         ),

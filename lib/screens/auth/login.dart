@@ -138,12 +138,16 @@ class _LoginState extends State<Login> {
                                     Map<String, dynamic> body =
                                         json.decode(response.body);
                                     bool success = true;
-                                     success = body['success'] == null ? false:true;
-                                    if ( success) {
+                                    success =
+                                        body['success'] == null ? false : true;
+                                    if (success) {
                                       print('here');
-                                      SharedPreferences localStorage = await SharedPreferences.getInstance();
+                                      SharedPreferences localStorage =
+                                          await SharedPreferences.getInstance();
                                       localStorage.setString(
-                                          'token', json.encode(body['success']['token']));
+                                          'token',
+                                          json.encode(
+                                              body['success']['token']));
                                       print(localStorage.getString('token'));
                                       localStorage.setString(
                                           'user', json.encode(body['user']));
@@ -161,6 +165,21 @@ class _LoginState extends State<Login> {
                                     });
                                   }
                                 },
+                              ),
+                              Text('OR'),
+                              RaisedButton(
+                                onPressed: (){
+                                  widget.toggleView();
+                                },
+                                shape: ContinuousRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                color: Colors.blue[400],
+                                child: Text(
+                                  'Register',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
