@@ -160,7 +160,7 @@ class Api {
   Future<User> profile() async {
     Response response = await Api().getData('/profile');
     print(response.body);
-    var user = json.decode(response.body)['user'];
+    Map<String,dynamic> user = json.decode(response.body)['user'];
     User myModels = User(
       id: user["id"],
       name: user["name"],
