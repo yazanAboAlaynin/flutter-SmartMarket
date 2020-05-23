@@ -11,6 +11,7 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class Register extends StatefulWidget {
   final Function toggleView;
   Register({this.toggleView});
@@ -27,12 +28,13 @@ class _RegisterState extends State<Register> {
   String confirm_password = '';
   String mobile = '';
   String dob = DateTime.now().toString();
-  String image;
+ // String image;
 
   String error = '';
   bool loading = false;
 
   Future<Null> _selectDate(BuildContext context) async {
+    //var status = await Permission.accessMediaLocation.status;
     final DateTime picked = await DatePicker.showDatePicker(context,
         showTitleActions: true,
         minTime: DateTime(1950, 1, 1),
@@ -43,6 +45,19 @@ class _RegisterState extends State<Register> {
     }, currentTime: DateTime.now(), locale: LocaleType.en);
   }
 
+  File _image;
+
+  Future getImage() async {
+    try {
+      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+      setState(() {
+        _image = image;
+      });
+    }catch(e){
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +136,19 @@ class _RegisterState extends State<Register> {
                               ),
                               SizedBox(
                                 height: 50,
+                              ),
+                              Center(
+                                  child: _image == null
+                                      ? Text('No image selected.')
+                                      : Image.file(_image),
+                              ),
+                              RaisedButton(
+                                shape: ContinuousRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(30),bottomRight: Radius.circular(30))),
+                                onPressed: getImage,
+                                child: Icon(Icons.add_a_photo),
+                              ),
+                              SizedBox(
+                                height: 15,
                               ),
                               TextFormField(
                                 decoration: textInputDecoration.copyWith(
@@ -220,25 +248,7 @@ class _RegisterState extends State<Register> {
                               SizedBox(
                                 height: 30,
                               ),
-                              Center(
-                                child: image == null
-                                    ? Text('No image selected.')
-                                    : Text('No image selected')
-                              ),
-                              RaisedButton(
-                                shape: ContinuousRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(30),bottomRight: Radius.circular(30))),
-                                onPressed: () async{
-                                 // var image = await ImagePicker.pickImage(source: ImageSource.camera);
 
-                                  setState(() {
-                                    this.image = 'image';
-                                  });
-                                },
-                                child: Text('Select Image'),
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
                               RaisedButton(
                                 shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(15)),
                                 color: Colors.blue[400],
@@ -260,7 +270,7 @@ class _RegisterState extends State<Register> {
                                       'c_password': confirm_password,
                                       'mobile': mobile,
                                       'dob': dob,
-                                      'image': image,
+                                      'image': _image,
                                     };
                                     Response response =
                                     await Api().authData(data, '/register');
