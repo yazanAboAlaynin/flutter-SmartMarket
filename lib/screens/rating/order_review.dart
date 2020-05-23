@@ -79,7 +79,7 @@ class Single_product extends StatelessWidget {
         child: Material(
           child: InkWell(
             onTap:(){
-              showDialog(
+              showDialog<Future>(
                   context: context,
                   builder: (context) {
                     return AlertDialog(
