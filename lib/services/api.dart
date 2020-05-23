@@ -139,7 +139,7 @@ class Api {
   Future<Product> getProduct(int id) async {
     Response response = await Api().getData('/product/$id');
     print(response.body);
-    var product = json.decode(response.body)['product'];
+    Map<String,dynamic> product = json.decode(response.body)['product'];
     Product myModels = Product(
       id: product['id'],
       name: product['name'],

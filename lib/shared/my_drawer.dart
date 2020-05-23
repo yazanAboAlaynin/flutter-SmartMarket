@@ -9,6 +9,7 @@ import 'package:flutter_smartmarket/screens/home/home.dart';
 import 'package:flutter_smartmarket/screens/profile/profile.dart';
 import 'package:flutter_smartmarket/services/api.dart';
 import 'package:flutter_smartmarket/shared/waiting.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyDrawer extends StatefulWidget {
@@ -32,8 +33,8 @@ class _MyDrawerState extends State<MyDrawer> {
     getData();
   }
   void logout() async{
-    var res = await Api().getData('/logout');
-    var body = json.decode(res.body);
+    Response res = await Api().getData('/logout');
+    Map<String,dynamic> body = json.decode(res.body);
     print(body);
     if(body['success']!= null){
       SharedPreferences localStorage = await SharedPreferences.getInstance();

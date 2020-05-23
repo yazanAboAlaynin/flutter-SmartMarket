@@ -340,7 +340,7 @@ class _ShowPropertiesState extends State<ShowProperties> {
               child: Text('${property.value}'),
             );
           }).toList(),
-          onChanged: (val) {
+          onChanged: (int val) {
             Navigator.pushReplacement<Object, Object>(
                 context,
                 new MaterialPageRoute<dynamic>(
