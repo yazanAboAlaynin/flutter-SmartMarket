@@ -218,6 +218,22 @@ class _ProductDetailsState extends State<ProductDetails> {
                           });
 
                           Cart.addItem(product);
+                          showDialog(
+                              context: context,
+                              builder: (context) =>
+                          AlertDialog(
+                            title: Text('Item added to cart'),
+
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text('close'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          ),
+                              );
                         },
                         color: Colors.blue[200],
                         textColor: Colors.white,
