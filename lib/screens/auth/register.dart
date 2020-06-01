@@ -10,7 +10,11 @@ import 'package:flutter_smartmarket/shared/loading.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:path/path.dart';
+import 'package:async/async.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -32,6 +36,63 @@ class _RegisterState extends State<Register> {
 
   String error = '';
   bool loading = false;
+
+  upload(File imageFile,data,context) async {
+    // open a bytestream
+    var stream = new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+    // get file length
+    var length = await imageFile.length();
+
+    // string to uri
+    var uri = Uri.parse("http://192.168.1.9:8000/api/register");
+
+    // create multipart request
+    var request = new http.MultipartRequest("POST", uri);
+
+    // multipart that takes file
+    var multipartFile = new http.MultipartFile('image', stream, length,
+        filename: basename(imageFile.path));
+
+    // add file to multipart
+    request.files.add(multipartFile);
+    request.fields['name'] = data['name'];
+    request.fields['email'] = data['email'];
+    request.fields['password'] = data['password'];
+    request.fields['c_password'] = data['c_password'];
+    request.fields['mobile'] = data['mobile'];
+    request.fields['dob'] = data['dob'];
+    request.fields['address'] = 'test';
+
+    // send
+    var response = await request.send();
+    print(response.statusCode);
+
+    // listen for response
+    response.stream.transform(utf8.decoder).listen((value) async{
+      print(value);
+      Map<String,dynamic> body = json.decode(value);
+      if (value != null) {
+        print('here');
+        SharedPreferences localStorage =
+            await SharedPreferences.getInstance();
+        localStorage.setString(
+            'token', json.encode(body['success']['token']));
+        Navigator.pushReplacement<Object,Object>(
+          context,
+          new MaterialPageRoute<dynamic>(
+              builder: (context) => Home()),
+        );
+      } else {
+        // _showMsg(body['message']);
+      }
+    });
+
+
+
+    setState(() {
+      loading = false;
+    });
+  }
 
   Future<Null> _selectDate(BuildContext context) async {
     //var status = await Permission.accessMediaLocation.status;
@@ -264,38 +325,19 @@ class _RegisterState extends State<Register> {
                                       loading = true;
                                     });
                                     var data = {
-                                      'name': email,
+                                      'name': name,
                                       'email': email,
                                       'password': password,
                                       'c_password': confirm_password,
                                       'mobile': mobile,
                                       'dob': dob,
-                                      'image': _image,
                                     };
-                                    Response response =
-                                    await Api().authData(data, '/register');
-                                    Map<String,dynamic> body = json.decode(response.body);
-                                    print(body);
-                                    if (body['success'] != null) {
-                                      print('here');
-                                      SharedPreferences localStorage =
-                                      await SharedPreferences.getInstance();
-                                      localStorage.setString(
-                                          'token', json.encode(body['success']['token']));
-                                      localStorage.setString(
-                                          'user', json.encode(body['user']));
-                                      Navigator.pushReplacement<Object,Object>(
-                                        context,
-                                        new MaterialPageRoute<dynamic>(
-                                            builder: (context) => Home()),
-                                      );
-                                    } else {
-                                      // _showMsg(body['message']);
-                                    }
+                                    upload(_image, data, context);
+//                                    Response response =
+////                                    await Api().authData(data, '/register');
+////                                    Map<String,dynamic> body = json.decode(response.body);
+////                                    print(body);
 
-                                    setState(() {
-                                      loading = false;
-                                    });
                                   }
                                 },
                               ),

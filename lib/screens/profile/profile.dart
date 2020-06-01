@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_smartmarket/models/product.dart';
 import 'package:flutter_smartmarket/models/user.dart';
+import 'package:flutter_smartmarket/screens/display/products_card.dart';
 import 'package:flutter_smartmarket/services/api.dart';
 import 'package:flutter_smartmarket/shared/loading.dart';
 
@@ -13,6 +15,8 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   User user;
   bool loading = true;
+  List<Product> products = List<Product>();
+
   Future<void> getData()async{
     User u = await Api().profile();
     setState(() {
@@ -20,10 +24,19 @@ class _ProfileState extends State<Profile> {
       loading = false;
     });
   }
+
+  Future<void> myItems()async{
+    List<Product> x = await Api().myItems();
+    setState(() {
+      products = x;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     getData();
+    myItems();
   }
   @override
   Widget build(BuildContext context) {
@@ -154,7 +167,7 @@ class _ProfileState extends State<Profile> {
                         Padding(
                           padding: EdgeInsets.only(left: 100),
                           child: Text(
-                            'My shop',
+                            'My Items',
                             style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold
@@ -163,14 +176,13 @@ class _ProfileState extends State<Profile> {
                         ),
                         SizedBox(height: 6,),
                         // =============List my shop===================
-                        _bulidMyShopItem('images/product7.jpg', 'laptop', '\$ 10'),
-                        _bulidMyShopItem('images/product8.jpg', 'watch', '\$ 10'),
-                        _bulidMyShopItem('images/product10.jpg', 'shoe', '\$ 10'),
-                        _bulidMyShopItem('images/product11.jpg', 'classes', '\$ 10'),
-                        _bulidMyShopItem('images/product7.jpg', 'laptop', '\$ 10'),
-                        _bulidMyShopItem('images/product8.jpg', 'watch', '\$ 10'),
-                        _bulidMyShopItem('images/product10.jpg', 'shoe', '\$ 10'),
-                        _bulidMyShopItem('images/product11.jpg', 'classes', '\$ 10'),
+                        Container(
+                          height: 300.0,
+                          padding: EdgeInsets.only(right: 8.0),
+                          width: MediaQuery.of(context).size.width - 30.0,
+                         // height: MediaQuery.of(context).size.height - 250,
+                          child: MyProducts(productsList: products),
+                        ),
 
                       ],
                     ),
@@ -186,7 +198,7 @@ class _ProfileState extends State<Profile> {
   }
 
   // ===============  My Shop Item ===========================
-  Widget _bulidMyShopItem(String imgPath, String NameProduct, String price) {
+  Widget _bulidMyShopItem(String imgPath, String productName, String price) {
     return Padding(
       padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
       child: InkWell(
@@ -210,7 +222,7 @@ class _ProfileState extends State<Profile> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(NameProduct, style: TextStyle(
+                      Text(productName, style: TextStyle(
                           fontSize: 16.0, fontWeight: FontWeight.bold),),
                       SizedBox(height: 2.0,),
                       Text(price,
@@ -225,4 +237,6 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
 }
+

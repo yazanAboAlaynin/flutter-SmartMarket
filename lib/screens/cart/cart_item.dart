@@ -47,9 +47,17 @@ class _CartItemState extends State<CartItem> {
                 Row(
                   children: <Widget>[
                     Spacer(),
-                    Padding(
-                      padding: EdgeInsets.only(right: 10,top: 1),
-                      child: Icon(Icons.close,size: 18,color: Colors.black,),
+                    InkWell(
+                      onTap: (){
+                        setState(() {
+                          Cart.deleteItem(widget.index);
+                          widget.calc();
+                        });
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 10,top: 1),
+                        child: Icon(Icons.close,size: 18,color: Colors.black,),
+                      ),
                     ),
 
                   ],

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smartmarket/models/cart.dart';
 import 'package:flutter_smartmarket/models/product.dart';
 import 'package:flutter_smartmarket/models/property.dart';
+import 'package:flutter_smartmarket/screens/cart/cart_view.dart';
 import 'package:flutter_smartmarket/screens/view_product/bottom.dart';
 import 'package:flutter_smartmarket/services/api.dart';
 import 'package:flutter_smartmarket/shared/constants.dart';
@@ -314,7 +315,13 @@ class _ProductDetailsState extends State<ProductDetails> {
 
             // ==============Floating Action Button===================
             floatingActionButton: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push<Object>(
+                  context,
+                  new MaterialPageRoute<dynamic>(
+                      builder: (context) => CartView()),
+                );
+              },
               backgroundColor: Colors.blue[300],
               child: Icon(Icons.shopping_cart),
             ),

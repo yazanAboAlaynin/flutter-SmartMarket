@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_smartmarket/screens/profile/profile.dart';
 
 class BottomBar extends StatelessWidget {
   @override
@@ -29,7 +30,9 @@ class BottomBar extends StatelessWidget {
                 children: <Widget>[
                   IconButton(
                     icon: Icon(Icons.home,color: Color(0xffef7532),),
-                    onPressed: (){},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }
                   ),
                 ],
               ),
@@ -41,7 +44,15 @@ class BottomBar extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Icon(Icons.person_outline,color: Color(0xff676e79),),
+                  InkWell(
+                      onTap: (){
+                        Navigator.push<Object>(
+                          context,
+                          new MaterialPageRoute<dynamic>(
+                              builder: (context) => Profile()),
+                        );
+                      },
+                      child: Icon(Icons.person_outline,color: Color(0xff676e79),)),
                 ],
               ),
             ),

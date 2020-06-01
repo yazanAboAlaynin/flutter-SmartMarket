@@ -183,4 +183,14 @@ class Api {
     //print(myModels);
     return myModels;
   }
+
+  Future<List<Product>> myItems() async{
+    Response response = await Api().getData('/my/items');
+    //print(response.body);
+    var products = json.decode(response.body)['products'] as List;
+    List<Product> myModels =
+    products.map((dynamic i) => Product.fromJson(i)).toList();
+    //print(myModels);
+    return myModels;
+  }
 }
