@@ -5,15 +5,18 @@ import 'package:flutter_smartmarket/services/api.dart';
 
 class MyProducts extends StatelessWidget {
   List<Product> productsList;
-  MyProducts({this.productsList});
+  bool press;
+  MyProducts({this.productsList,this.press});
   @override
   Widget build(BuildContext context) {
     List<Widget> products = new List<Widget>();
     for (int i = 0; i < productsList.length; i++) {
       Widget product = InkWell(
         onTap: () {
-          Navigator.push<Object>(context, new MaterialPageRoute<dynamic>(
-              builder: (context) => ProductDetails(id: productsList[i].id)));
+          if(press) {
+            Navigator.push<Object>(context, new MaterialPageRoute<dynamic>(
+                builder: (context) => ProductDetails(id: productsList[i].id)));
+          }
         },
         child: Padding(
           padding: EdgeInsets.only(top: 5.0, right: 5.0, left: 5.0, bottom: 5.0),
@@ -32,7 +35,7 @@ class MyProducts extends StatelessWidget {
             child: Column(
               children: [
                 Hero(
-                  tag: productsList[i].id,
+                  tag: Text('${productsList[i].id}'),
                   child: Container(
                     height: 151.0,
                     width: 150.0,

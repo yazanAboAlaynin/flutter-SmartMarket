@@ -181,7 +181,7 @@ class _ProfileState extends State<Profile> {
                           padding: EdgeInsets.only(right: 8.0),
                           width: MediaQuery.of(context).size.width - 30.0,
                          // height: MediaQuery.of(context).size.height - 250,
-                          child: MyProducts(productsList: products),
+                          child: MyProducts(productsList: products,press: false),
                         ),
 
                       ],
@@ -198,45 +198,42 @@ class _ProfileState extends State<Profile> {
   }
 
   // ===============  My Shop Item ===========================
-  Widget _bulidMyShopItem(String imgPath, String productName, String price) {
-    return Padding(
-      padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
-      child: InkWell(
-        onTap: () {},
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              child: Row(
-                children: <Widget>[
-                  // =================image===================
-                  Hero(
-                    tag: imgPath,
-                    child: CircleAvatar(
-                      radius: 48,
-                      backgroundImage: AssetImage(imgPath),
-                    ),
-                  ),
-                  SizedBox(width: 16.0,),
-                  // =================name product and price===================
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(productName, style: TextStyle(
-                          fontSize: 16.0, fontWeight: FontWeight.bold),),
-                      SizedBox(height: 2.0,),
-                      Text(price,
-                        style: TextStyle(fontSize: 14.0, color: Colors.red),),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+//  Widget _bulidMyShopItem(String imgPath, String productName, String price) {
+//    return Padding(
+//      padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+//      child: Row(
+//        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//        children: <Widget>[
+//          Container(
+//            child: Row(
+//              children: <Widget>[
+//                // =================image===================
+//                Hero(
+//                  tag: imgPath,
+//                  child: CircleAvatar(
+//                    radius: 48,
+//                    backgroundImage: AssetImage(imgPath),
+//                  ),
+//                ),
+//                SizedBox(width: 16.0,),
+//                // =================name product and price===================
+//                Column(
+//                  crossAxisAlignment: CrossAxisAlignment.start,
+//                  children: <Widget>[
+//                    Text(productName, style: TextStyle(
+//                        fontSize: 16.0, fontWeight: FontWeight.bold),),
+//                    SizedBox(height: 2.0,),
+//                    Text(price,
+//                      style: TextStyle(fontSize: 14.0, color: Colors.red),),
+//                  ],
+//                ),
+//              ],
+//            ),
+//          ),
+//        ],
+//      ),
+//    );
+//  }
 
 }
 

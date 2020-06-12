@@ -106,7 +106,7 @@ class _ShowProductsState extends State<ShowProducts> {
                       padding: EdgeInsets.only(right: 15.0),
                       width: MediaQuery.of(context).size.width - 30.0,
                       height: MediaQuery.of(context).size.height - 250,
-                      child: MyProducts(productsList: products),
+                      child: MyProducts(productsList: products,press: true),
                     ),
                   ],
                 ),
