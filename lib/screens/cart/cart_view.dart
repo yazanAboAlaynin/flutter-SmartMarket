@@ -50,7 +50,7 @@ class _CartViewState extends State<CartView> {
             Expanded(
               child: ListTile(
                 title: Text('Total : '),
-                subtitle: Text('\$${Cart.total}'),
+                subtitle: Text('${Cart.total} S.P'),
               ),
             ),
 

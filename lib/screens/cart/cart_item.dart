@@ -130,7 +130,7 @@ class _CartItemState extends State<CartItem> {
                     Padding(
                       padding: EdgeInsets.only(right: 10),
                       child: Text(
-                        '\$$priceAfterDiscount',
+                        '$priceAfterDiscount S.P',
                         style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0,color: Colors.red),
                       ),
                     ),

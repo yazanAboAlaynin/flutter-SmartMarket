@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_smartmarket/models/item.dart';
+import 'package:flutter_smartmarket/models/order_item.dart';
 import 'package:flutter_smartmarket/models/product.dart';
 import 'package:flutter_smartmarket/models/property.dart';
 import 'package:flutter_smartmarket/models/user.dart';
@@ -193,4 +194,15 @@ class Api {
     //print(myModels);
     return myModels;
   }
+
+  Future<List<OrderItem>> checkReview() async{
+    Response response = await Api().getData('/orderReview');
+    print(response.body);
+    var products = json.decode(response.body)['products'] as List;
+    List<OrderItem> myModels =
+    products.map((dynamic i) => OrderItem.fromJson(i)).toList();
+    //print(myModels);
+    return myModels;
+  }
+
 }

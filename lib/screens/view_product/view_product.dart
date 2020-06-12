@@ -127,7 +127,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       children: <Widget>[
                         Expanded(
                             child: Text(
-                          "\$ ${product.price}",
+                          " ${product.price} S.P",
                           style: TextStyle(
                               //decoration: TextDecoration.lineThrough,
                               color: Colors.grey),
