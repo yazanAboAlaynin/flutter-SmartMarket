@@ -41,7 +41,10 @@ class _CheckAuthState extends State<CheckAuth> {
         isAuth = true;
       });
     }
-    _checkReview();
+    //_checkReview();
+    setState(() {
+      loading = false;
+    });
 
   }
   @override

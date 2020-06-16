@@ -31,20 +31,29 @@ class _RegisterState extends State<Register> {
   String password = '';
   String confirm_password = '';
   String mobile = '';
+  String gender = 'gender';
+  String carrer = '';
+  String social_status = 'Single';
+  String scientific_level = 'not educated';
+  String three_most_hobbies = '';
+
   String dob = DateTime.now().toString();
- // String image;
+  // String image;
 
   String error = '';
   bool loading = false;
 
-  upload(File imageFile,data,context) async {
+  List genders = ['gender','Male', 'Female'];
+
+  upload(File imageFile, data, context) async {
     // open a bytestream
-    var stream = new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+    var stream =
+        new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
     // get file length
     var length = await imageFile.length();
 
     // string to uri
-    var uri = Uri.parse("http://192.168.1.9:8000/api/register");
+    var uri = Uri.parse("http://192.168.81.138:8000/api/register");
 
     // create multipart request
     var request = new http.MultipartRequest("POST", uri);
@@ -68,26 +77,21 @@ class _RegisterState extends State<Register> {
     print(response.statusCode);
 
     // listen for response
-    response.stream.transform(utf8.decoder).listen((value) async{
+    response.stream.transform(utf8.decoder).listen((value) async {
       print(value);
-      Map<String,dynamic> body = json.decode(value);
+      Map<String, dynamic> body = json.decode(value);
       if (value != null) {
         print('here');
-        SharedPreferences localStorage =
-            await SharedPreferences.getInstance();
-        localStorage.setString(
-            'token', json.encode(body['success']['token']));
-        Navigator.pushReplacement<Object,Object>(
+        SharedPreferences localStorage = await SharedPreferences.getInstance();
+        localStorage.setString('token', json.encode(body['success']['token']));
+        Navigator.pushReplacement<Object, Object>(
           context,
-          new MaterialPageRoute<dynamic>(
-              builder: (context) => Home()),
+          new MaterialPageRoute<dynamic>(builder: (context) => Home()),
         );
       } else {
         // _showMsg(body['message']);
       }
     });
-
-
 
     setState(() {
       loading = false;
@@ -115,245 +119,328 @@ class _RegisterState extends State<Register> {
       setState(() {
         _image = image;
       });
-    }catch(e){
+    } catch (e) {
       print(e);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return loading ? Loading() : Scaffold(
-      // ======== image ========
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("images/shop2.jpg"),
-              fit: BoxFit.contain,
-              alignment: Alignment.topCenter,
-            ),
-          ),
-          // ========== text and icon back ===============
-          child: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-
-                // =========== design =================
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                  height: MediaQuery.of(context).size.height * 0.72,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(25),
-                      topLeft: Radius.circular(25),
-                    ),
-                  ),
-                  // ==========text field=============
-                  child: ListView(
-                    children: <Widget>[
-                      Container(
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: <Widget>[
-                                  RaisedButton(
-                                    onPressed: (){
-                                      widget.toggleView();
-                                    },
-                                    shape: ContinuousRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20)),
-                                    color: Colors.blue[400],
-                                    child: Text(
-                                      'Login',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
+    return loading
+        ? Loading()
+        : Scaffold(
+            // ======== image ========
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ListView(
+                  children: <Widget>[
+                    Container(
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                RaisedButton(
+                                  onPressed: () {
+                                    widget.toggleView();
+                                  },
+                                  shape: ContinuousRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  color: Colors.blue[400],
+                                  child: Text(
+                                    'Login',
+                                    style: TextStyle(
+                                      color: Colors.white,
                                     ),
                                   ),
-                                ],),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                'Welcome',
-                                style: TextStyle(
-                                    color: Color(0xfff032f42),
-                                    fontSize: 26,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                'Register',
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 20),
-                              ),
-                              SizedBox(
-                                height: 50,
-                              ),
-                              Center(
-                                  child: _image == null
-                                      ? Text('No image selected.')
-                                      : Image.file(_image),
-                              ),
-                              RaisedButton(
-                                shape: ContinuousRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(30),bottomRight: Radius.circular(30))),
-                                onPressed: getImage,
-                                child: Icon(Icons.add_a_photo),
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                decoration: textInputDecoration.copyWith(
-                                    hintText: 'Name', icon: Icon(Icons.person),),
-                                validator: (val) =>
-                                    val.isEmpty ? 'Enter your Name' : null,
-                                onChanged: (val) {
-                                  setState(() {
-                                    name = val;
-                                  });
-                                },
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                decoration: textInputDecoration.copyWith(
-                                    hintText: 'Email', icon: Icon(Icons.email)),
-                                validator: (val) =>
-                                    val.isEmpty ? 'Enter an email' : null,
-                                onChanged: (val) {
-                                  setState(() {
-                                    email = val;
-                                  });
-                                },
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                decoration: textInputDecoration.copyWith(
-                                    hintText: 'Password',
-                                    icon: Icon(Icons.https)),
-                                obscureText: true,
-                                validator: (val) => val.length < 8
-                                    ? 'Enter a password 8+ chars long'
-                                    : null,
-                                onChanged: (val) {
-                                  setState(() {
-                                    password = val;
-                                  });
-                                },
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                decoration: textInputDecoration.copyWith(
-                                    hintText: 'Confirm Password',
-                                    icon: Icon(Icons.https)),
-                                obscureText: true,
-                                validator: (val) => val.length < 8
-                                    ? 'Enter a password 8+ chars long'
-                                    : null,
-                                onChanged: (val) {
-                                  setState(() {
-                                    confirm_password = val;
-                                  });
-                                },
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                decoration: textInputDecoration.copyWith(
-                                    hintText: 'Mobile',
-                                    icon: Icon(Icons.phone_android)),
-                                validator: (val) =>
-                                    val.isEmpty ? 'Enter your number' : null,
-                                onChanged: (val) {
-                                  setState(() {
-                                    mobile = val;
-                                  });
-                                },
-                              ),
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Row(children: <Widget>[
-                                Text('Date of Birth: '),
-                                SizedBox(
-                                  width: 15,
                                 ),
-                                Text("${dob}".split(' ')[0]),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                RaisedButton(
-                                  shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                  onPressed: () => _selectDate(context),
-                                  child: Text('Select date'),
-                                ),
-                                SizedBox(
-                                  height: 30.0,
-                                ),
-                              ]),
-                              SizedBox(
-                                height: 30,
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              'Welcome',
+                              style: TextStyle(
+                                  color: Color(0xfff032f42),
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              'Register',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 20),
+                            ),
+                            SizedBox(
+                              height: 50,
+                            ),
+                            Center(
+                              child: _image == null
+                                  ? Text('No image selected.')
+                                  : Image.file(_image),
+                            ),
+                            RaisedButton(
+                              shape: ContinuousRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(30),
+                                      bottomRight: Radius.circular(30))),
+                              onPressed: getImage,
+                              child: Icon(Icons.add_a_photo),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            TextFormField(
+                              decoration: textInputDecoration.copyWith(
+                                hintText: 'Name',
+                                icon: Icon(Icons.person),
                               ),
-
-                              RaisedButton(
-                                shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                                color: Colors.blue[400],
-                                child: Text(
-                                  'Register',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  if (_formKey.currentState.validate()) {
+                              validator: (val) =>
+                                  val.isEmpty ? 'Enter your Name' : null,
+                              onChanged: (val) {
+                                setState(() {
+                                  name = val;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            TextFormField(
+                              decoration: textInputDecoration.copyWith(
+                                  hintText: 'Email', icon: Icon(Icons.email)),
+                              validator: (val) =>
+                                  val.isEmpty ? 'Enter an email' : null,
+                              onChanged: (val) {
+                                setState(() {
+                                  email = val;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            TextFormField(
+                              decoration: textInputDecoration.copyWith(
+                                  hintText: 'Password',
+                                  icon: Icon(Icons.https)),
+                              obscureText: true,
+                              validator: (val) => val.length < 8
+                                  ? 'Enter a password 8+ chars long'
+                                  : null,
+                              onChanged: (val) {
+                                setState(() {
+                                  password = val;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            TextFormField(
+                              decoration: textInputDecoration.copyWith(
+                                  hintText: 'Confirm Password',
+                                  icon: Icon(Icons.https)),
+                              obscureText: true,
+                              validator: (val) => val.length < 8
+                                  ? 'Enter a password 8+ chars long'
+                                  : null,
+                              onChanged: (val) {
+                                setState(() {
+                                  confirm_password = val;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            TextFormField(
+                              decoration: textInputDecoration.copyWith(
+                                  hintText: 'Mobile',
+                                  icon: Icon(Icons.phone_android)),
+                              validator: (val) =>
+                                  val.isEmpty ? 'Enter your number' : null,
+                              onChanged: (val) {
+                                setState(() {
+                                  mobile = val;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            TextFormField(
+                              decoration: textInputDecoration.copyWith(
+                                  hintText: 'career',
+                                  icon: Icon(Icons.format_align_justify)),
+                              validator: (val) =>
+                                  val.isEmpty ? 'Enter your carrer' : null,
+                              onChanged: (val) {
+                                setState(() {
+                                  carrer = val;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              height: 60.0,
+                              child: DropdownButtonFormField(
+                                itemHeight: 50.0,
+                                value: gender,
+                                decoration: textInputDecoration.copyWith(
+                                    hintText: 'male',
+                                    icon: Icon(Icons.person_outline)),
+                                items: genders.map((s) {
+                                  return DropdownMenuItem(
+                                    value: s,
+                                    child: Text(s),
+                                  );
+                                }).toList(),
+                                onChanged: (val) {
+                                  if(val != 'gender') {
                                     setState(() {
-                                      loading = true;
+                                      gender = val;
                                     });
-                                    var data = {
-                                      'name': name,
-                                      'email': email,
-                                      'password': password,
-                                      'c_password': confirm_password,
-                                      'mobile': mobile,
-                                      'dob': dob,
-                                    };
-                                    upload(_image, data, context);
+                                  }
+
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+
+                            Container(
+                              height: 60.0,
+                              child: DropdownButtonFormField(
+                                itemHeight: 50.0,
+                                value: 'Male',
+                                decoration: textInputDecoration.copyWith(
+                                    hintText: 'social_status',
+                                    icon: Icon(Icons.person_outline)),
+                                items: genders.map((s) {
+                                  return DropdownMenuItem(
+                                    value: s,
+                                    child: Text(s),
+                                  );
+                                }).toList(),
+                                onChanged: (val) {
+                                  setState(() {
+                                    gender = val;
+                                  });
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              height: 60.0,
+                              child: DropdownButtonFormField(
+                                itemHeight: 50.0,
+                                value: 'Male',
+                                decoration: textInputDecoration.copyWith(
+                                    hintText: 'gender',
+                                    icon: Icon(Icons.person_outline)),
+                                items: genders.map((s) {
+                                  return DropdownMenuItem(
+                                    value: s,
+                                    child: Text(s),
+                                  );
+                                }).toList(),
+                                onChanged: (val) {
+                                  setState(() {
+                                    gender = val;
+                                  });
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            TextFormField(
+                              decoration: textInputDecoration.copyWith(
+                                  hintText: 'Mobile',
+                                  icon: Icon(Icons.phone_android)),
+                              validator: (val) =>
+                                  val.isEmpty ? 'Enter your number' : null,
+                              onChanged: (val) {
+                                setState(() {
+                                  mobile = val;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Row(children: <Widget>[
+                              Text('Date of Birth: '),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text("${dob}".split(' ')[0]),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              RaisedButton(
+                                shape: ContinuousRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                onPressed: () => _selectDate(context),
+                                child: Text('Select date'),
+                              ),
+                              SizedBox(
+                                height: 30.0,
+                              ),
+                            ]),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            RaisedButton(
+                              shape: ContinuousRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                              color: Colors.blue[400],
+                              child: Text(
+                                'Register',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onPressed: () async {
+                                if (_formKey.currentState.validate()) {
+                                  setState(() {
+                                    loading = true;
+                                  });
+                                  var data = {
+                                    'name': name,
+                                    'email': email,
+                                    'password': password,
+                                    'c_password': confirm_password,
+                                    'mobile': mobile,
+                                    'dob': dob,
+                                  };
+                                  upload(_image, data, context);
 //                                    Response response =
 ////                                    await Api().authData(data, '/register');
 ////                                    Map<String,dynamic> body = json.decode(response.body);
 ////                                    print(body);
 
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
+                                }
+                              },
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
   }
 }
-
