@@ -15,7 +15,7 @@ class CheckAuth extends StatefulWidget {
 
 class _CheckAuthState extends State<CheckAuth> {
   bool isAuth = false;
-  List<OrderItem> items = [];
+
   bool loading = true;
   @override
   void initState() {
@@ -23,15 +23,7 @@ class _CheckAuthState extends State<CheckAuth> {
     _checkIfLoggedIn();
 
   }
-  void _checkReview() async {
-    List<OrderItem> x = await Api().checkReview();
-    setState((){
-      items = x;
-    });
-    setState(() {
-      loading = false;
-    });
-  }
+
   void _checkIfLoggedIn() async{
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token') ?? '';
@@ -41,7 +33,7 @@ class _CheckAuthState extends State<CheckAuth> {
         isAuth = true;
       });
     }
-    //_checkReview();
+
     setState(() {
       loading = false;
     });
@@ -51,10 +43,7 @@ class _CheckAuthState extends State<CheckAuth> {
   Widget build(BuildContext context) {
     Widget child;
     if (isAuth) {
-      if(items.length > 0){
-        child = ListOrder(items: items);
-      }
-      else child = Home();
+      child = Home();
     } else {
       child = Authenticate();
     }

@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_smartmarket/models/item.dart';
+import 'package:flutter_smartmarket/models/order_item.dart';
 import 'package:flutter_smartmarket/models/product.dart';
 import 'package:flutter_smartmarket/screens/cart/cart_view.dart';
 import 'package:flutter_smartmarket/screens/display/products_card.dart';
+import 'package:flutter_smartmarket/screens/rating/order_review.dart';
 import 'package:flutter_smartmarket/services/api.dart';
 import 'package:flutter_smartmarket/shared/loading.dart';
 import 'package:flutter_smartmarket/shared/my_drawer.dart';
@@ -24,6 +26,25 @@ class _HomeState extends State<Home> {
   bool loading1 = false;
   bool loading2 = false;
   bool loading3 = false;
+  bool loading = false;
+  List<OrderItem> items = [];
+  void _checkReview() async {
+    setState(() {
+      loading = true;
+    });
+
+    List<OrderItem> x = await Api().checkReview();
+
+    setState((){
+      items = x;
+      loading = false;
+    });
+
+
+    getCategories();
+    getBrands();
+    getSellers();
+  }
 
   List<Item> categories = List<Item>();
   Future<void> getCategories() async {
@@ -64,9 +85,8 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    getCategories();
-    getBrands();
-    getSellers();
+    _checkReview();
+
   }
 
   @override
@@ -75,8 +95,10 @@ class _HomeState extends State<Home> {
     var screenWidth = MediaQuery.of(context).size.width;
 
     // ==== widget for image =======
-
-    return Scaffold(
+    if(items.length != 0){
+      return ListOrder(items: items);
+    }
+    return loading ? Loading() : Scaffold(
       appBar: AppBar(
         elevation: 0.1,
         title: Text(

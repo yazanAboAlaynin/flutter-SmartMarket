@@ -31,10 +31,11 @@ class _RegisterState extends State<Register> {
   String password = '';
   String confirm_password = '';
   String mobile = '';
-  String gender = 'gender';
+  String address = '';
+  String gender = null;
   String carrer = '';
-  String social_status = 'Single';
-  String scientific_level = 'not educated';
+  String social_status = null;
+  String scientific_level = null;
   String three_most_hobbies = '';
 
   String dob = DateTime.now().toString();
@@ -43,7 +44,10 @@ class _RegisterState extends State<Register> {
   String error = '';
   bool loading = false;
 
-  List genders = ['gender','Male', 'Female'];
+  List genders = ['Male', 'Female'];
+  List socials_status = ['Single', 'Married','Widowed','Separated','Divorced'];
+  List scientific_levels = ['Not Educated', 'High school diploma','Associate degree',
+  'Bachelor\'s degree','Master\'s degree', 'Doctoral degree'];
 
   upload(File imageFile, data, context) async {
     // open a bytestream
@@ -53,7 +57,7 @@ class _RegisterState extends State<Register> {
     var length = await imageFile.length();
 
     // string to uri
-    var uri = Uri.parse("http://192.168.81.138:8000/api/register");
+    var uri = Uri.parse("http://192.168.1.9:8000/api/register");
 
     // create multipart request
     var request = new http.MultipartRequest("POST", uri);
@@ -70,7 +74,12 @@ class _RegisterState extends State<Register> {
     request.fields['c_password'] = data['c_password'];
     request.fields['mobile'] = data['mobile'];
     request.fields['dob'] = data['dob'];
-    request.fields['address'] = 'test';
+    request.fields['address'] = data['address'];
+    request.fields['gender'] = data['gender'];
+    request.fields['career'] = data['career'];
+    request.fields['social_status'] = data['social_status'];
+    request.fields['scientific_level'] = data['scientific_level'];
+    request.fields['three_most_hobbies'] = data['three_most_hobbies'];
 
     // send
     var response = await request.send();
@@ -275,6 +284,21 @@ class _RegisterState extends State<Register> {
                             ),
                             TextFormField(
                               decoration: textInputDecoration.copyWith(
+                                  hintText: 'Address',
+                                  icon: Icon(Icons.home)),
+                              validator: (val) =>
+                              val.isEmpty ? 'Enter your address' : null,
+                              onChanged: (val) {
+                                setState(() {
+                                  address = val;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            TextFormField(
+                              decoration: textInputDecoration.copyWith(
                                   hintText: 'career',
                                   icon: Icon(Icons.format_align_justify)),
                               validator: (val) =>
@@ -288,97 +312,98 @@ class _RegisterState extends State<Register> {
                             SizedBox(
                               height: 15,
                             ),
-                            Container(
-                              height: 60.0,
-                              child: DropdownButtonFormField(
-                                itemHeight: 50.0,
-                                value: gender,
-                                decoration: textInputDecoration.copyWith(
-                                    hintText: 'male',
-                                    icon: Icon(Icons.person_outline)),
-                                items: genders.map((s) {
-                                  return DropdownMenuItem(
-                                    value: s,
-                                    child: Text(s),
-                                  );
-                                }).toList(),
-                                onChanged: (val) {
-                                  if(val != 'gender') {
-                                    setState(() {
-                                      gender = val;
-                                    });
-                                  }
-
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-
-                            Container(
-                              height: 60.0,
-                              child: DropdownButtonFormField(
-                                itemHeight: 50.0,
-                                value: 'Male',
-                                decoration: textInputDecoration.copyWith(
-                                    hintText: 'social_status',
-                                    icon: Icon(Icons.person_outline)),
-                                items: genders.map((s) {
-                                  return DropdownMenuItem(
-                                    value: s,
-                                    child: Text(s),
-                                  );
-                                }).toList(),
-                                onChanged: (val) {
-                                  setState(() {
-                                    gender = val;
-                                  });
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Container(
-                              height: 60.0,
-                              child: DropdownButtonFormField(
-                                itemHeight: 50.0,
-                                value: 'Male',
-                                decoration: textInputDecoration.copyWith(
-                                    hintText: 'gender',
-                                    icon: Icon(Icons.person_outline)),
-                                items: genders.map((s) {
-                                  return DropdownMenuItem(
-                                    value: s,
-                                    child: Text(s),
-                                  );
-                                }).toList(),
-                                onChanged: (val) {
-                                  setState(() {
-                                    gender = val;
-                                  });
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
                             TextFormField(
                               decoration: textInputDecoration.copyWith(
-                                  hintText: 'Mobile',
-                                  icon: Icon(Icons.phone_android)),
+                                  hintText: 'Three hobbies',
+                                  icon: Icon(Icons.category)),
                               validator: (val) =>
-                                  val.isEmpty ? 'Enter your number' : null,
+                              val.isEmpty ? 'Enter your hobbies' : null,
                               onChanged: (val) {
                                 setState(() {
-                                  mobile = val;
+                                  three_most_hobbies = val;
                                 });
                               },
                             ),
                             SizedBox(
                               height: 15,
                             ),
+                            Container(
+                              height: 60.0,
+                              child: DropdownButtonFormField(
+                                itemHeight: 50.0,
+                                value: gender,
+                                validator: (value) => value == null ? 'field required' : null,
+                                decoration: textInputDecoration.copyWith(
+                                    hintText: 'Gender',
+                                    icon: Icon(Icons.person_outline)),
+                                items: genders.map((s) {
+                                  return DropdownMenuItem(
+                                    value: s,
+                                    child: Text(s),
+                                  );
+                                }).toList(),
+                                onChanged: (val) {
+                                    setState(() {
+                                      gender = val;
+                                    });
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+
+                            Container(
+                              height: 60.0,
+                              child: DropdownButtonFormField(
+                                itemHeight: 50.0,
+                                value: social_status,
+                                validator: (value) => value == null ? 'field required' : null,
+                                decoration: textInputDecoration.copyWith(
+                                    hintText: 'Social Status',
+                                    icon: Icon(Icons.person_outline)),
+                                items: socials_status.map((s) {
+                                  return DropdownMenuItem(
+                                    value: s,
+                                    child: Text(s),
+                                  );
+                                }).toList(),
+                                onChanged: (val) {
+                                    setState(() {
+                                      social_status = val;
+                                    });
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              height: 60.0,
+                              child: DropdownButtonFormField(
+                                itemHeight: 50.0,
+                                value: scientific_level,
+                                validator: (value) => value == null ? 'field required' : null,
+                                decoration: textInputDecoration.copyWith(
+                                    hintText: 'Scientific level',
+                                    icon: Icon(Icons.person_outline)),
+                                items: scientific_levels.map((s) {
+                                  return DropdownMenuItem(
+                                    value: s,
+                                    child: Text(s),
+                                  );
+                                }).toList(),
+                                onChanged: (val) {
+                                    setState(() {
+                                      scientific_level = val;
+                                    });
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+
                             Row(children: <Widget>[
                               Text('Date of Birth: '),
                               SizedBox(
@@ -423,6 +448,12 @@ class _RegisterState extends State<Register> {
                                     'c_password': confirm_password,
                                     'mobile': mobile,
                                     'dob': dob,
+                                    'address': address,
+                                    'gender': gender,
+                                    'social_status': social_status,
+                                    'scientific_level': scientific_level,
+                                    'career': carrer,
+                                    'three_most_hobbies': three_most_hobbies,
                                   };
                                   upload(_image, data, context);
 //                                    Response response =
