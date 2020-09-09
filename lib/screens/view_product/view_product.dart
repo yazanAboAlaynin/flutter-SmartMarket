@@ -364,7 +364,6 @@ class _ShowPropertiesState extends State<ShowProperties> {
                 value: property.product_id,
                 child: Text(
                   '${property.value}',
-                  style: TextStyle(fontSize: 10),
                 ),
               );
             }).toList(),

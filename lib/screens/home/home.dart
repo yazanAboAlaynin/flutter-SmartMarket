@@ -291,19 +291,14 @@ class _ShowPsState extends State<ShowPs> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(right: 15.0),
-          width: MediaQuery.of(context).size.width - 30.0,
-//height: MediaQuery.of(context).size.height - 250,
-          child: MyProducts(
-            productsList: products,
-            press: true,
-          ),
-        ),
-      ],
+    return Container(
+      padding: EdgeInsets.only(right: 15.0, left: 22),
+      width: MediaQuery.of(context).size.width - 30.0,
+      height: MediaQuery.of(context).size.height,
+      child: MyProducts(
+        productsList: products,
+        press: true,
+      ),
     );
   }
 }
