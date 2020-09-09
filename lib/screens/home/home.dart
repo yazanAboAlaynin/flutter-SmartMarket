@@ -35,11 +35,10 @@ class _HomeState extends State<Home> {
 
     List<OrderItem> x = await Api().checkReview();
 
-    setState((){
+    setState(() {
       items = x;
       loading = false;
     });
-
 
     getCategories();
     getBrands();
@@ -86,7 +85,6 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _checkReview();
-
   }
 
   @override
@@ -95,131 +93,133 @@ class _HomeState extends State<Home> {
     var screenWidth = MediaQuery.of(context).size.width;
 
     // ==== widget for image =======
-    if(items.length != 0){
+    if (items.length != 0) {
       return ListOrder(items: items);
     }
-    return loading ? Loading() : Scaffold(
-      appBar: AppBar(
-        elevation: 0.1,
-        title: Text(
-          'Smart Market',
-          style: TextStyle(color: Colors.white, fontSize: 18.0),
-        ),
-        backgroundColor: Colors.blue[200],
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              showSearch(context: context, delegate: DataSearch());
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.shopping_cart,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push<Object>(
-                  context,
-                  new MaterialPageRoute<dynamic>(
-                      builder: (context) => CartView()));
-            },
-          )
-        ],
-      ),
-
-      // ====== start side bar =====
-      drawer: Drawer(
-        child: MyDrawer(),
-      ),
-      //===== end side bar =======
-      // =========start body===============
-      body: ListView(
-        children: <Widget>[
-          Container(
-            child: SafeArea(
-                child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // =========display image==============
-                  ImageCarusel(),
-                  // ========Text Category============
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 8.0, bottom: 2.0, left: 8.0, right: 8.0),
-                    child: Text(
-                      'Categories',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  // =========Category===========
-                  loading1
-                      ? Waiting()
-                      : DisplayWidgetArea(
-                          itemList: categories,
-                          type: 'category',
-                        ),
-
-                  // ========Text brand============
-                  SizedBox(
-                    height: 20.0,
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 8.0, bottom: 2.0, left: 8.0, right: 8.0),
-                    child: Text(
-                      'Brand',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-
-                  // ========Brand=========
-
-                  loading2
-                      ? Waiting()
-                      : DisplayWidgetArea(
-                          itemList: brands,
-                          type: 'brand',
-                        ),
-
-                  // ========Text MostSelling============
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 8.0, bottom: 2.0, left: 8.0, right: 8.0),
-                    child: Text(
-                      'Most Sellers',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-
-                  // ========MostSelling=========
-
-                  loading3
-                      ? Waiting()
-                      : DisplayWidgetArea(
-                          itemList: sellers,
-                          type: 'seller',
-                        ),
-                ],
+    return loading
+        ? Loading()
+        : Scaffold(
+            appBar: AppBar(
+              elevation: 0.1,
+              title: Text(
+                'Smart Market',
+                style: TextStyle(color: Colors.white, fontSize: 18.0),
               ),
-            )),
-          ),
-        ],
-      ),
-    );
+              backgroundColor: Colors.blue[200],
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    showSearch(context: context, delegate: DataSearch());
+                  },
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.shopping_cart,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.push<Object>(
+                        context,
+                        new MaterialPageRoute<dynamic>(
+                            builder: (context) => CartView()));
+                  },
+                )
+              ],
+            ),
+
+            // ====== start side bar =====
+            drawer: Drawer(
+              child: MyDrawer(),
+            ),
+            //===== end side bar =======
+            // =========start body===============
+            body: ListView(
+              children: <Widget>[
+                Container(
+                  child: SafeArea(
+                      child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        // =========display image==============
+                        ImageCarusel(),
+                        // ========Text Category============
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 8.0, bottom: 2.0, left: 8.0, right: 8.0),
+                          child: Text(
+                            'Categories',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        // =========Category===========
+                        loading1
+                            ? Waiting()
+                            : DisplayWidgetArea(
+                                itemList: categories,
+                                type: 'category',
+                              ),
+
+                        // ========Text brand============
+                        SizedBox(
+                          height: 20.0,
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 8.0, bottom: 2.0, left: 8.0, right: 8.0),
+                          child: Text(
+                            'Brand',
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+
+                        // ========Brand=========
+
+                        loading2
+                            ? Waiting()
+                            : DisplayWidgetArea(
+                                itemList: brands,
+                                type: 'brand',
+                              ),
+
+                        // ========Text MostSelling============
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 8.0, bottom: 2.0, left: 8.0, right: 8.0),
+                          child: Text(
+                            'Most Sellers',
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+
+                        // ========MostSelling=========
+
+                        loading3
+                            ? Waiting()
+                            : DisplayWidgetArea(
+                                itemList: sellers,
+                                type: 'seller',
+                              ),
+                      ],
+                    ),
+                  )),
+                ),
+              ],
+            ),
+          );
   }
 }
 
@@ -232,7 +232,7 @@ class DataSearch extends SearchDelegate<String> {
           Icons.clear,
         ),
         onPressed: () {
-          query ='';
+          query = '';
         },
       ),
     ];
@@ -240,7 +240,6 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildLeading(BuildContext context) {
-
     return IconButton(
       icon: AnimatedIcon(
         icon: AnimatedIcons.menu_arrow,
@@ -254,13 +253,13 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-
-    return ShowPs(query: query,);
+    return ShowPs(
+      query: query,
+    );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-
     return Container();
   }
 }
@@ -283,11 +282,13 @@ class _ShowPsState extends State<ShowPs> {
       products = x;
     });
   }
+
   @override
   void initState() {
     super.initState();
     getProducts();
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -296,11 +297,13 @@ class _ShowPsState extends State<ShowPs> {
         Container(
           padding: EdgeInsets.only(right: 15.0),
           width: MediaQuery.of(context).size.width - 30.0,
-          height: MediaQuery.of(context).size.height - 250,
-          child: MyProducts(productsList: products),
+//height: MediaQuery.of(context).size.height - 250,
+          child: MyProducts(
+            productsList: products,
+            press: true,
+          ),
         ),
       ],
     );
   }
 }
-
