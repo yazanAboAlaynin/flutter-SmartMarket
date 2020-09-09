@@ -220,21 +220,19 @@ class _ProductDetailsState extends State<ProductDetails> {
 
                           Cart.addItem(product);
                           showDialog(
-                              context: context,
-                              builder: (context) =>
-                          AlertDialog(
-                            title: Text('Item added to cart'),
-
-                            actions: <Widget>[
-                              FlatButton(
-                                child: Text('close'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          ),
-                              );
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Item added to cart'),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('close'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
                         },
                         color: Colors.blue[200],
                         textColor: Colors.white,
@@ -354,23 +352,30 @@ class _ShowPropertiesState extends State<ShowProperties> {
       }
       Widget property = ListTile(
         title: Text('${widget.prop[i].name}'),
-        subtitle: DropdownButtonFormField(
-          value: widget.prop[i].product_id,
-          decoration: textInputDecoration,
-          items: l.map((property) {
-            return DropdownMenuItem(
-              value: property.product_id,
-              child: Text('${property.value}'),
-            );
-          }).toList(),
-          onChanged: (int val) {
-            Navigator.pushReplacement<Object, Object>(
-                context,
-                new MaterialPageRoute<dynamic>(
-                    builder: (context) => ProductDetails(
-                          id: val,
-                        )));
-          },
+        subtitle: Container(
+          height: 50,
+          child: DropdownButton(
+            itemHeight: 40,
+            value: widget.prop[i].product_id,
+            //  decoration: textInputDecoration,
+            items: l.map((property) {
+              return DropdownMenuItem(
+                value: property.product_id,
+                child: Text(
+                  '${property.value}',
+                  style: TextStyle(fontSize: 10),
+                ),
+              );
+            }).toList(),
+            onChanged: (int val) {
+              Navigator.pushReplacement<Object, Object>(
+                  context,
+                  new MaterialPageRoute<dynamic>(
+                      builder: (context) => ProductDetails(
+                            id: val,
+                          )));
+            },
+          ),
         ),
       );
       properties.add(property);

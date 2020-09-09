@@ -10,8 +10,8 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Api {
-  final String _url = 'http://192.168.1.9:8000/api';
-  final String _images_url = 'http://192.168.1.9:8000/storage/';
+  final String _url = 'http://192.168.1.8:8000/api';
+  final String _images_url = 'http://192.168.1.8:8000/storage/';
   String token = '';
 
   String getImagesUrl() => _images_url;
@@ -140,7 +140,7 @@ class Api {
   Future<Product> getProduct(int id) async {
     Response response = await Api().getData('/product/$id');
     print(response.body);
-    Map<String,dynamic> product = json.decode(response.body)['product'];
+    Map<String, dynamic> product = json.decode(response.body)['product'];
     Product myModels = Product(
       id: product['id'],
       name: product['name'],
@@ -161,7 +161,7 @@ class Api {
   Future<User> profile() async {
     Response response = await Api().getData('/profile');
     print(response.body);
-    Map<String,dynamic> user = json.decode(response.body)['user'];
+    Map<String, dynamic> user = json.decode(response.body)['user'];
     User myModels = User(
       id: user["id"],
       name: user["name"],
@@ -176,7 +176,7 @@ class Api {
   }
 
   Future<List<Product>> search(dynamic data) async {
-    Response response = await Api().sendData(data,'/search');
+    Response response = await Api().sendData(data, '/search');
     //print(response.body);
     var products = json.decode(response.body)['products'] as List;
     List<Product> myModels =
@@ -185,24 +185,23 @@ class Api {
     return myModels;
   }
 
-  Future<List<Product>> myItems() async{
+  Future<List<Product>> myItems() async {
     Response response = await Api().getData('/my/items');
     //print(response.body);
     var products = json.decode(response.body)['products'] as List;
     List<Product> myModels =
-    products.map((dynamic i) => Product.fromJson(i)).toList();
+        products.map((dynamic i) => Product.fromJson(i)).toList();
     //print(myModels);
     return myModels;
   }
 
-  Future<List<OrderItem>> checkReview() async{
+  Future<List<OrderItem>> checkReview() async {
     Response response = await Api().getData('/orderReview');
     print(response.body);
     var products = json.decode(response.body)['products'] as List;
     List<OrderItem> myModels =
-    products.map((dynamic i) => OrderItem.fromJson(i)).toList();
+        products.map((dynamic i) => OrderItem.fromJson(i)).toList();
     //print(myModels);
     return myModels;
   }
-
 }

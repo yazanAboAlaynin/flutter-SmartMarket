@@ -50,7 +50,7 @@ class _LoginState extends State<Login> {
                       Container(
                         padding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                        height: MediaQuery.of(context).size.height * 0.72,
+                        // height: MediaQuery.of(context).size.height * 0.72,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -137,11 +137,11 @@ class _LoginState extends State<Login> {
                                         await Api().authData(data, '/login');
                                     Map<String, dynamic> body =
                                         json.decode(response.body);
+                                    print(body);
                                     bool success = true;
                                     success =
                                         body['success'] == null ? false : true;
                                     if (success) {
-                                      print('here');
                                       SharedPreferences localStorage =
                                           await SharedPreferences.getInstance();
                                       localStorage.setString(
@@ -168,7 +168,7 @@ class _LoginState extends State<Login> {
                               ),
                               Text('OR'),
                               RaisedButton(
-                                onPressed: (){
+                                onPressed: () {
                                   widget.toggleView();
                                 },
                                 shape: ContinuousRectangleBorder(
