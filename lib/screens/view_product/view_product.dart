@@ -355,7 +355,8 @@ class _ShowPropertiesState extends State<ShowProperties> {
         subtitle: Container(
           height: 50,
           child: DropdownButton(
-            itemHeight: 40,
+            isExpanded: true,
+            itemHeight: 50,
             value: widget.prop[i].product_id,
             //  decoration: textInputDecoration,
             items: l.map((property) {
