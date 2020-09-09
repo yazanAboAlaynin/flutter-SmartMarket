@@ -14,17 +14,15 @@ class ListOrder extends StatefulWidget {
 }
 
 class _ListOrderState extends State<ListOrder> {
-
-  void erase(index){
+  void erase(index) {
     setState(() {
       widget.items.removeAt(index);
     });
     print(widget.items.length);
-    if(widget.items.length == 0){
+    if (widget.items.length == 0) {
       Navigator.pushReplacement<Object, Object>(
         context,
-        new MaterialPageRoute<dynamic>(
-            builder: (context) => Home()),
+        new MaterialPageRoute<dynamic>(builder: (context) => Home()),
       );
     }
   }
@@ -39,10 +37,9 @@ class _ListOrderState extends State<ListOrder> {
       body: GridView.builder(
           padding: EdgeInsets.only(top: 10),
           itemCount: widget.items.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2
-          ),
-          itemBuilder: (BuildContext context , int index){
+          gridDelegate:
+              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          itemBuilder: (BuildContext context, int index) {
             return Single_product(
               product_name: widget.items[index].product.name,
               product_picture: widget.items[index].product.image,
@@ -52,14 +49,12 @@ class _ListOrderState extends State<ListOrder> {
               f: erase,
               index: index,
             );
-          }
-      ),
+          }),
     );
   }
 }
 
 class Single_product extends StatefulWidget {
-
   final product_name;
   final product_picture;
   final product_id;
@@ -68,9 +63,14 @@ class Single_product extends StatefulWidget {
   final index;
   Function f;
 
-
-  Single_product({this.product_name, this.product_picture,
-    this.product_id, this.product_price,this.order_id,this.f,this.index});
+  Single_product(
+      {this.product_name,
+      this.product_picture,
+      this.product_id,
+      this.product_price,
+      this.order_id,
+      this.f,
+      this.index});
 
   @override
   _Single_productState createState() => _Single_productState();
@@ -80,7 +80,7 @@ class _Single_productState extends State<Single_product> {
   var rating = 0.0;
   final _formKey = GlobalKey<FormState>();
 
-  String comment='';
+  String comment = '';
 
   @override
   Widget build(BuildContext context) {
@@ -89,17 +89,15 @@ class _Single_productState extends State<Single_product> {
         tag: Text('hero 1'),
         child: Material(
           child: InkWell(
-            onTap:(){
+            onTap: () {
               showDialog<Future>(
                   context: context,
                   builder: (context) {
                     return AlertDialog(
                       title: Text('Rate'),
-
                       content: Container(
                         height: 130.0,
                         child: Column(
-
                           children: <Widget>[
                             SmoothStarRating(
                               rating: rating,
@@ -114,19 +112,20 @@ class _Single_productState extends State<Single_product> {
                               onRated: (value) {
                                 value = value.roundToDouble();
                                 print("rating value -> $value");
-                                setState((){
+                                setState(() {
                                   rating = value;
                                 });
                               },
                             ),
-                            SizedBox(height: 10,),
+                            SizedBox(
+                              height: 10,
+                            ),
                             Form(
-                            key: _formKey,
+                              key: _formKey,
                               child: TextFormField(
                                 decoration: textInputDecoration.copyWith(
-                                    hintText: 'comment',
-                                   ),
-                                obscureText: true,
+                                  hintText: 'comment',
+                                ),
                                 validator: (val) => val.length < 1
                                     ? 'Leave Comment please!'
                                     : null,
@@ -142,7 +141,7 @@ class _Single_productState extends State<Single_product> {
                       ),
                       actions: <Widget>[
                         MaterialButton(
-                          onPressed: () async{
+                          onPressed: () async {
                             if (_formKey.currentState.validate()) {
                               var data = {
                                 'rate': rating,
@@ -151,7 +150,7 @@ class _Single_productState extends State<Single_product> {
                                 'comment': comment,
                               };
                               Response response =
-                              await Api().sendData(data, '/review');
+                                  await Api().sendData(data, '/review');
                               Navigator.of(context).pop();
                               widget.f(widget.index);
                               print(response.body);
@@ -160,15 +159,14 @@ class _Single_productState extends State<Single_product> {
                           child: Text("Ok"),
                         ),
                         MaterialButton(
-                          onPressed: (){
+                          onPressed: () {
                             Navigator.of(context).pop();
                           },
                           child: Text("close"),
                         ),
                       ],
                     );
-                  }
-              );
+                  });
             },
             child: GridTile(
               footer: Container(
@@ -176,19 +174,27 @@ class _Single_productState extends State<Single_product> {
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                      child: Text(widget.product_name,style: TextStyle(fontWeight: FontWeight.w400,fontSize: 23.0)),
+                      child: Text(widget.product_name,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 23.0)),
                     ),
-                    Text('${widget.product_price} S.P',style: TextStyle(fontWeight: FontWeight.w800,color: Colors.redAccent,fontSize: 16.0),),
+                    Text(
+                      '${widget.product_price} S.P',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          color: Colors.redAccent,
+                          fontSize: 16.0),
+                    ),
                   ],
                 ),
               ),
-              child: Image.network(Api().getImagesUrl()+widget.product_picture,fit: BoxFit.fill),
+              child: Image.network(
+                  Api().getImagesUrl() + widget.product_picture,
+                  fit: BoxFit.fill),
             ),
           ),
-
         ),
       ),
     );
   }
 }
-

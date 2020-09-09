@@ -9,17 +9,20 @@ class ImageCarusel extends StatelessWidget {
       child: Carousel(
         boxFit: BoxFit.cover,
         images: <AssetImage>[
-          AssetImage('images/product7.jpg'),
-          AssetImage('images/product8.jpg'),
-          AssetImage('images/product10.jpg'),
+          AssetImage('images/welcom.png'),
+          AssetImage('images/welcomee.jpg'),
+          AssetImage('images/welcomeee.jpg'),
         ],
         autoplay: true,
         animationCurve: Curves.fastOutSlowIn,
-        animationDuration: Duration(milliseconds: 1000,),
+        animationDuration: Duration(
+          milliseconds: 1000,
+        ),
         dotSize: 5.0,
         indicatorBgPadding: 5.0,
         dotBgColor: Colors.transparent,
       ),
-    );;
+    );
+    ;
   }
 }
