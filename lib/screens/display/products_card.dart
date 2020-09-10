@@ -6,20 +6,24 @@ import 'package:flutter_smartmarket/services/api.dart';
 class MyProducts extends StatelessWidget {
   List<Product> productsList;
   bool press;
-  MyProducts({this.productsList,this.press});
+  MyProducts({this.productsList, this.press});
   @override
   Widget build(BuildContext context) {
     List<Widget> products = new List<Widget>();
     for (int i = 0; i < productsList.length; i++) {
       Widget product = InkWell(
         onTap: () {
-          if(press) {
-            Navigator.push<Object>(context, new MaterialPageRoute<dynamic>(
-                builder: (context) => ProductDetails(id: productsList[i].id)));
+          if (press) {
+            Navigator.push<Object>(
+                context,
+                new MaterialPageRoute<dynamic>(
+                    builder: (context) =>
+                        ProductDetails(id: productsList[i].id)));
           }
         },
         child: Padding(
-          padding: EdgeInsets.only(top: 5.0, right: 5.0, left: 5.0, bottom: 5.0),
+          padding:
+              EdgeInsets.only(top: 5.0, right: 5.0, left: 5.0, bottom: 5.0),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15.0),
@@ -37,7 +41,7 @@ class MyProducts extends StatelessWidget {
                 Hero(
                   tag: Text('${productsList[i].id}'),
                   child: Container(
-                    height: 151.0,
+                    height: 130.0,
                     width: 150.0,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
@@ -47,7 +51,7 @@ class MyProducts extends StatelessWidget {
                           bottomRight: Radius.circular(9.0)),
                       image: DecorationImage(
                         image: NetworkImage(
-                            Api().getImagesUrl() +  productsList[i].image),
+                            Api().getImagesUrl() + productsList[i].image),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -81,7 +85,7 @@ class MyProducts extends StatelessWidget {
       primary: false,
       crossAxisSpacing: 10.0,
       mainAxisSpacing: 15.0,
-      childAspectRatio: 0.8,
+      childAspectRatio: 0.9,
       children: products,
     );
   }
