@@ -154,13 +154,13 @@ class Api {
       quantity: product['quantity'],
       vendor_id: product['vendor_id'],
     );
-    print(myModels);
+    //   print(myModels);
     return myModels;
   }
 
   Future<User> profile() async {
     Response response = await Api().getData('/profile');
-    print(response.body);
+    // print(response.body);
     Map<String, dynamic> user = json.decode(response.body)['user'];
     User myModels = User(
       id: user["id"],
@@ -197,10 +197,20 @@ class Api {
 
   Future<List<OrderItem>> checkReview() async {
     Response response = await Api().getData('/orderReview');
-    print(response.body);
+    // print(response.body);
     var products = json.decode(response.body)['products'] as List;
     List<OrderItem> myModels =
         products.map((dynamic i) => OrderItem.fromJson(i)).toList();
+    //print(myModels);
+    return myModels;
+  }
+
+  Future<List<Product>> recommendation() async {
+    Response response = await Api().getData('/recommendation');
+    print(response.body);
+    var products = json.decode(response.body)['products'] as List;
+    List<Product> myModels =
+        products.map((dynamic i) => Product.fromJson(i)).toList();
     //print(myModels);
     return myModels;
   }

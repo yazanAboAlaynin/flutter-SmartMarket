@@ -41,7 +41,7 @@ class MyProducts extends StatelessWidget {
                 Hero(
                   tag: Text('${productsList[i].id}'),
                   child: Container(
-                    height: 130.0,
+                    height: 151.0,
                     width: 150.0,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
@@ -85,7 +85,7 @@ class MyProducts extends StatelessWidget {
       primary: false,
       crossAxisSpacing: 10.0,
       mainAxisSpacing: 15.0,
-      childAspectRatio: 0.9,
+      childAspectRatio: 0.75,
       children: products,
     );
   }
