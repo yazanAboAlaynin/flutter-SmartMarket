@@ -45,9 +45,21 @@ class _RegisterState extends State<Register> {
   bool loading = false;
 
   List genders = ['Male', 'Female'];
-  List socials_status = ['Single', 'Married','Widowed','Separated','Divorced'];
-  List scientific_levels = ['Not Educated', 'High school diploma','Associate degree',
-  'Bachelor\'s degree','Master\'s degree', 'Doctoral degree'];
+  List socials_status = [
+    'Single',
+    'Married',
+    'Widowed',
+    'Separated',
+    'Divorced'
+  ];
+  List scientific_levels = [
+    'Not Educated',
+    'High school diploma',
+    'Associate degree',
+    'Bachelor\'s degree',
+    'Master\'s degree',
+    'Doctoral degree'
+  ];
 
   upload(File imageFile, data, context) async {
     // open a bytestream
@@ -57,7 +69,7 @@ class _RegisterState extends State<Register> {
     var length = await imageFile.length();
 
     // string to uri
-    var uri = Uri.parse("http://192.168.1.9:8000/api/register");
+    var uri = Uri.parse("http://192.168.43.145:8000/api/register");
 
     // create multipart request
     var request = new http.MultipartRequest("POST", uri);
@@ -82,6 +94,8 @@ class _RegisterState extends State<Register> {
 
     // send
     var response = await request.send();
+    print('here');
+    print(response.reasonPhrase);
     print(response.statusCode);
 
     // listen for response
@@ -283,10 +297,9 @@ class _RegisterState extends State<Register> {
                             ),
                             TextFormField(
                               decoration: textInputDecoration.copyWith(
-                                  hintText: 'Address',
-                                  icon: Icon(Icons.home)),
+                                  hintText: 'Address', icon: Icon(Icons.home)),
                               validator: (val) =>
-                              val.isEmpty ? 'Enter your address' : null,
+                                  val.isEmpty ? 'Enter your address' : null,
                               onChanged: (val) {
                                 setState(() {
                                   address = val;
@@ -308,7 +321,6 @@ class _RegisterState extends State<Register> {
                                 });
                               },
                             ),
-
                             SizedBox(
                               height: 15,
                             ),
@@ -317,7 +329,8 @@ class _RegisterState extends State<Register> {
                               child: DropdownButtonFormField(
                                 itemHeight: 50.0,
                                 value: gender,
-                                validator: (value) => value == null ? 'field required' : null,
+                                validator: (value) =>
+                                    value == null ? 'field required' : null,
                                 decoration: textInputDecoration.copyWith(
                                     hintText: 'Gender',
                                     icon: Icon(Icons.person_outline)),
@@ -328,22 +341,22 @@ class _RegisterState extends State<Register> {
                                   );
                                 }).toList(),
                                 onChanged: (val) {
-                                    setState(() {
-                                      gender = val;
-                                    });
+                                  setState(() {
+                                    gender = val;
+                                  });
                                 },
                               ),
                             ),
                             SizedBox(
                               height: 15,
                             ),
-
                             Container(
                               height: 60.0,
                               child: DropdownButtonFormField(
                                 itemHeight: 50.0,
                                 value: social_status,
-                                validator: (value) => value == null ? 'field required' : null,
+                                validator: (value) =>
+                                    value == null ? 'field required' : null,
                                 decoration: textInputDecoration.copyWith(
                                     hintText: 'Social Status',
                                     icon: Icon(Icons.person_outline)),
@@ -354,9 +367,9 @@ class _RegisterState extends State<Register> {
                                   );
                                 }).toList(),
                                 onChanged: (val) {
-                                    setState(() {
-                                      social_status = val;
-                                    });
+                                  setState(() {
+                                    social_status = val;
+                                  });
                                 },
                               ),
                             ),
@@ -368,7 +381,8 @@ class _RegisterState extends State<Register> {
                               child: DropdownButtonFormField(
                                 itemHeight: 50.0,
                                 value: scientific_level,
-                                validator: (value) => value == null ? 'field required' : null,
+                                validator: (value) =>
+                                    value == null ? 'field required' : null,
                                 decoration: textInputDecoration.copyWith(
                                     hintText: 'Scientific level',
                                     icon: Icon(Icons.person_outline)),
@@ -379,16 +393,15 @@ class _RegisterState extends State<Register> {
                                   );
                                 }).toList(),
                                 onChanged: (val) {
-                                    setState(() {
-                                      scientific_level = val;
-                                    });
+                                  setState(() {
+                                    scientific_level = val;
+                                  });
                                 },
                               ),
                             ),
                             SizedBox(
                               height: 15,
                             ),
-
                             Row(children: <Widget>[
                               Text('Date of Birth: '),
                               SizedBox(

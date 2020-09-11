@@ -10,8 +10,8 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Api {
-  final String _url = 'http://192.168.1.6:8000/api';
-  final String _images_url = 'http://192.168.1.6:8000/storage/';
+  final String _url = 'http://192.168.43.145:8000/api';
+  final String _images_url = 'http://192.168.43.145:8000/storage/';
   String token = '';
 
   String getImagesUrl() => _images_url;
