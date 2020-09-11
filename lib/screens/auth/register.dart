@@ -79,7 +79,6 @@ class _RegisterState extends State<Register> {
     request.fields['career'] = data['career'];
     request.fields['social_status'] = data['social_status'];
     request.fields['scientific_level'] = data['scientific_level'];
-    request.fields['three_most_hobbies'] = data['three_most_hobbies'];
 
     // send
     var response = await request.send();
@@ -309,21 +308,7 @@ class _RegisterState extends State<Register> {
                                 });
                               },
                             ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            TextFormField(
-                              decoration: textInputDecoration.copyWith(
-                                  hintText: 'Three hobbies',
-                                  icon: Icon(Icons.category)),
-                              validator: (val) =>
-                              val.isEmpty ? 'Enter your hobbies' : null,
-                              onChanged: (val) {
-                                setState(() {
-                                  three_most_hobbies = val;
-                                });
-                              },
-                            ),
+
                             SizedBox(
                               height: 15,
                             ),
@@ -453,7 +438,6 @@ class _RegisterState extends State<Register> {
                                     'social_status': social_status,
                                     'scientific_level': scientific_level,
                                     'career': carrer,
-                                    'three_most_hobbies': three_most_hobbies,
                                   };
                                   upload(_image, data, context);
 //                                    Response response =
